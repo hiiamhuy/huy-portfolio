@@ -98,3 +98,26 @@ section { padding: 4rem 0 2rem; }
 @media (max-width: 520px) {
   .nav__links { gap: 0.7rem; font-size: 0.9rem; }
 }
+
+/* EXPERIENCE */
+.timeline { display: flex; flex-direction: column; gap: 1.5rem; }
+.timeline__item { border-left: 2px solid var(--border); padding-left: 1.1rem; }
+.timeline__head { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: baseline; gap: 0.3rem; }
+.timeline__role { margin: 0; font-size: 1.05rem; }
+.timeline__org { color: var(--accent); }
+.timeline__dates { color: var(--muted); font-size: 0.85rem; white-space: nowrap; }
+.timeline__points { margin: 0.4rem 0 0; padding-left: 1.1rem; color: var(--muted); }
+.timeline__earlier { color: var(--muted); font-size: 0.9rem; margin-top: 0.5rem; }
+
+/* CARD BANNER (placeholder until real screenshots are added) */
+.card__media {
+  aspect-ratio: 16 / 9; display: flex; align-items: flex-end; padding: 0.8rem;
+  background: linear-gradient(135deg, color-mix(in srgb, var(--accent) 35%, var(--surface)), var(--surface));
+}
+.card__media span { font-weight: 700; color: var(--text); font-size: 0.95rem; }
+
+/* ALSO BUILT */
+.also__list { list-style: none; padding: 0; margin: 0; display: grid; gap: 0.8rem; }
+.also__list li { color: var(--muted); padding-left: 1.2rem; position: relative; }
+.also__list li::before { content: "\25B9"; position: absolute; left: 0; color: var(--accent); }
+.also__list strong { color: var(--text); font-weight: 600; }
