@@ -1,92 +1,109 @@
 # Portfolio Website — Design Spec
 
-**Date:** 2026-06-06
-**Owner:** hiiamhuy (huynguyen206@gmail.com)
-**Goal:** A simple, polished, single-page software/web-dev portfolio for a resume and a specific job application, hosted on GitHub Pages, buildable in one day.
+**Date:** 2026-06-06 (revised)
+**Owner:** Huy Nguyen (hiiamhuy@uw.edu, github.com/hiiamhuy)
+**Goal:** A polished single-page portfolio for a job search, hosted on GitHub Pages, that honors Huy's ~10-year UW-IT career *and* his recent AI/automation projects.
 
-## Summary
+## Positioning
 
-A hand-curated, single static page that showcases 4–6 of the owner's best
-GitHub projects (drawn from two accounts, `hiiamhuy` and `film35`), plus a
-downloadable résumé. No build step, no framework — the site itself doubles as
-a work sample demonstrating clean, accessible front-end code.
+Headline identity: **IT & Automation Specialist** — a blend that reflects the
+real résumé (a long IT/web-publishing career at UW-IT) while foregrounding the
+modern dev/AI work (WhisperX/Ollama, RAG, n8n, FastAPI). Not framed as a pure
+software-engineer site, not framed as a pure helpdesk site.
+
+## Status
+
+The static scaffold already exists and is committed (HTML/CSS/JS, résumé
+md→pdf pipeline, theme toggle, smooth-scroll nav). This revision covers two
+things: (1) populating real content, and (2) one structural addition — an
+**Experience** section the original scaffold did not have.
+
+## Stack (unchanged)
+
+- Plain `index.html` + `style.css` + small `main.js`. No build step, no deps.
+- Single page, dark default theme with a persisted light/dark toggle.
+- The site doubles as a clean, accessible front-end work sample.
 
 ## Hosting & URL
 
-- **Repo name:** `hiiamhuy.github.io` (on the `hiiamhuy` account)
-- **Live URL:** `https://hiiamhuy.github.io` (user/organization Pages — clean root URL, no subpath)
-- **Deploy:** GitHub Pages serving `main` branch root. No build config required.
-
-## Stack
-
-- Plain `index.html` + `style.css` + a small `main.js`.
-- No dependencies, no `node_modules`, no build pipeline.
-- Rationale: lowest risk for a one-day deadline; nothing to break; instant deploy.
-
-## File Layout
-
-```
-hiiamhuy.github.io/
-├── index.html
-├── style.css
-├── main.js              # tiny: smooth-scroll nav, theme toggle (optional)
-├── resume.md            # source of truth for the résumé
-├── resume.pdf           # generated from resume.md; linked for download
-├── assets/
-│   ├── projects/        # project screenshots
-│   └── favicon.svg
-└── docs/superpowers/specs/2026-06-06-portfolio-design.md
-```
+- **Repo:** `hiiamhuy.github.io` (account: `hiiamhuy`)
+- **Live URL:** `https://hiiamhuy.github.io` (root user-Pages URL)
+- **Deploy:** GitHub Pages from `main` branch root. No build config.
 
 ## Page Structure (single scroll, anchored nav)
 
-1. **Hero** — name, one-line title ("Software Developer"), short tagline.
-   Links: GitHub, email, LinkedIn, and **Download Résumé (PDF)**.
-2. **About** — 2–3 sentence intro.
-3. **Featured Projects** — 4–6 curated cards. Each card: screenshot, title,
-   1–2 line description, tech tags, **Repo** link, optional **Live demo** link.
-   Projects may come from either the `hiiamhuy` or `film35` account; links are
-   cross-account.
-4. **Skills** — grouped lists (languages, frameworks, tools).
-5. **Contact / Footer** — email + social links.
+1. **Hero** — "Huy Nguyen / IT & Automation Specialist". Tagline:
+   *"I keep systems running and automate the tedious parts — from UW-IT service
+   operations to AI-driven workflows."* Buttons: Download Résumé, View Projects.
+   Links: GitHub, Email (`hiiamhuy@uw.edu`), LinkedIn.
+2. **About** — 2–3 sentences: UW Informatics + American Ethnic Studies grad
+   (2018); ~10 years at UW-IT across Tier-1 support → web publishing → service
+   operations; now builds AI/automation tooling. ITIL 4 Foundations certified.
+3. **Experience** (NEW) — compact timeline from the résumé:
+   - Senior Computer Specialist, UW-IT Service Center — 2019–present
+   - Senior Computer Specialist, User Consulting Support, UW-IT — *(dates: placeholder)*
+   - Identity & Access Management Student Lead, UW-IT Service Center — 2014–2018
+   - Student IT Consultant, UW-IT Service Center — 2013–2015
+   - One-line "earlier": Web Intern, OCA-Greater Seattle (2015); Digital
+     Connector, Cisco (2010–2011).
+   Each role: 1–2 condensed bullets of impact.
+4. **Featured Projects** — 3 cards, each with a real repo:
+   - **Call Center QA — Transcription & Analysis** — automated call
+     transcription + LLM quality scoring. WhisperX (speech-to-text + speaker
+     diarization) and Ollama (Llama 3.2) on UW Hyak via SLURM/GPU containers;
+     rubric-based scoring routes calls to review queues. Tags: Python, WhisperX,
+     Ollama, SLURM, Docker. Repo: https://github.com/hiiamhuy/uwitsc-call-analysis
+   - **MRBS → TRMNL E-Ink Integration** — FastAPI service that pushes classroom
+     booking schedules to e-ink displays via MRBS webhooks + a background
+     scheduler. Tags: FastAPI, SQLAlchemy, MySQL, Docker. Repo:
+     `https://github.com/hiiamhuy/Yanko-MRBS-FASTAPI` *(URL to confirm)*
+   - **Pantheon Storage Analysis** — Bash tool with platform auto-detection
+     (WordPress/Drupal/generic) and multi-format export (JSON/CSV/HTML/MD).
+     Tags: Bash, Terminus, WP-CLI/Drush. Repo:
+     https://github.com/hiiamhuy/storage-analysis
+5. **Also built** (secondary list, no repo links) — compact text list:
+   - n8n QuickBooks + receipt-OCR bookkeeping automation
+   - OpenWeb UI offline call-center assistant (RAG + Ollama, Docker + Tailscale)
+   - Homelab builds — TrueNAS (ZFS), unRAID, Synology 3-2-1 backup
+6. **Skills** — three groups:
+   - *Languages*: Python, JavaScript, HTML/CSS, SQL, Bash
+   - *AI & Automation*: WhisperX, Ollama, RAG, n8n, LM Studio, OpenWeb UI
+   - *Platforms & Tools*: Docker, Linux, Pantheon, ServiceNow, Tailscale, Git
+7. **Footer / Contact** — `hiiamhuy@uw.edu`, GitHub, LinkedIn, ITIL 4 note.
 
-Sections explicitly excluded (YAGNI for one-day scope): blog, experience
-timeline, testimonials.
+## Content Changes From Scaffold
+
+- Replace **all** `huynguyen206@gmail.com` references with `hiiamhuy@uw.edu`
+  (hero links, footer, `mailto:`, `resume.md`).
+- Drop the `film35` cross-account assumption — single account `hiiamhuy`.
+- Add the Experience section (new markup; reuse a simple list/timeline style
+  consistent with existing CSS variables, no new framework).
+- Rewrite `resume.md` from the real résumé content and regenerate `resume.pdf`.
 
 ## Résumé Handling
 
-- `resume.md` is the editable source of truth, kept in the repo.
-- `resume.pdf` is generated from it (e.g. `pandoc resume.md -o resume.pdf`,
-  or a VS Code Markdown-to-PDF extension).
-- The Hero links the **PDF** for download (recruiters expect PDF, not raw `.md`).
+- `resume.md` is the source of truth; rewritten with real experience, projects,
+  skills, education, ITIL 4 cert, and `hiiamhuy@uw.edu`.
+- `resume.pdf` regenerated from it (`pandoc resume.md -o resume.pdf`, or a
+  Markdown-to-PDF fallback). Hero "Download Résumé" links the PDF.
 
-## Design Quality
+## Design Quality (unchanged targets)
 
-- Responsive (mobile-first), works cleanly on phone and desktop.
-- Semantic, accessible HTML; good color contrast; keyboard-navigable.
-- Tasteful default theme (single accent color, generous whitespace, system
-  font stack or one Google font). Optional light/dark toggle.
-- Target a strong Lighthouse score since the site is itself a work sample.
+- Responsive/mobile-first, semantic + accessible HTML, good contrast,
+  keyboard-navigable. Target strong Lighthouse Accessibility/Best-Practices.
 
-## Deploy Flow
+## Open Items / Placeholders (non-blocking)
 
-1. Build files locally.
-2. `git add` + commit.
-3. Create the `hiiamhuy.github.io` repo on GitHub (account: hiiamhuy).
-4. `git push` to `main`.
-5. Settings → Pages → source = `main` branch / root → site goes live at
-   `https://hiiamhuy.github.io`.
+- **LinkedIn URL** — real profile link (replace `data-edit="linkedin"`
+  placeholders; remove if none).
+- **MRBS repo URL** — confirm `github.com/hiiamhuy/Yanko-MRBS-FASTAPI`.
+- **User Consulting Support dates** — fill the date range.
+- **Location** — assume Seattle, WA unless corrected.
+- **Project screenshots** — placeholders until real images provided.
+- **resume.pdf** — confirm PDF regeneration tool available locally.
 
-## Content Needed From Owner (gathered during build)
+## Out of Scope (YAGNI)
 
-- 4–6 featured repos: URL, which account, one-sentence description, tech tags,
-  live-demo URL if any.
-- Screenshots for each featured project (placeholders used until provided).
-- Email, LinkedIn (and any other links) for hero/footer.
-- `resume.md` content.
-
-## Out of Scope
-
-- Custom domain (can be added later via a `CNAME` file).
-- Backend, contact form submission (mailto link only).
-- Auto-pulling repos from the GitHub API (curation chosen instead).
+- No framework, build step, analytics, contact form, or blog.
+- Custom domain deferred (can add a `CNAME` later).
+- No GitHub-API auto-pulling of repos (curation chosen instead).
