@@ -1,77 +1,78 @@
-# Portfolio Website Implementation Plan
+# Portfolio Content & Deploy Implementation Plan
 
 > **For agentic workers:** REQUIRED SUB-SKILL: Use superpowers:subagent-driven-development (recommended) or superpowers:executing-plans to implement this plan task-by-task. Steps use checkbox (`- [ ]`) syntax for tracking.
 
-**Goal:** Build a single-page, hand-curated software-dev portfolio and deploy it to GitHub Pages at `https://hiiamhuy.github.io`.
+**Goal:** Populate the existing static portfolio scaffold with Huy Nguyen's real content (IT & Automation Specialist positioning, Experience timeline, 3 real projects, "Also built" list, real skills, `hiiamhuy@uw.edu`), regenerate the résumé PDF, and deploy to GitHub Pages.
 
-**Architecture:** Static site — one `index.html` with semantic sections (hero, about, projects, skills, footer), one `style.css`, one tiny `main.js` (smooth-scroll nav + light/dark toggle). Project content is hardcoded in HTML (no JS dependency, better SEO/accessibility, works as a work sample). Résumé kept as `resume.md` (source of truth) and exported to `resume.pdf` for download.
+**Architecture:** The static scaffold (HTML/CSS/JS, theme toggle, smooth-scroll nav, résumé md→pdf) already exists and is committed. This plan (1) appends CSS for two new section types — an Experience timeline and an "Also built" list — and a gradient card banner that replaces broken placeholder images; (2) rewrites `index.html` body content; (3) rewrites `resume.md` and regenerates `resume.pdf`; (4) verifies and deploys. No build step, no dependencies.
 
-**Tech Stack:** HTML5, CSS3 (custom properties, fl/grid, media queries), vanilla JS, GitHub Pages. No build step, no dependencies. Pandoc (optional) for résumé PDF.
-
-**Note on testing:** This is a static site with no application logic to unit-test. "Verification" steps here mean: open the file in a browser, visually confirm rendering, check responsive behavior, and run a Lighthouse audit. Commit after each task.
+**Tech Stack:** HTML5, CSS3 (custom properties), vanilla JS (unchanged), GitHub Pages. Pandoc (optional) for the résumé PDF.
 
 **Project root:** `/home/hiiamhuy/Documents/github/hiiamhuy.github.io`
 
+**Note on testing:** Static site, no application logic to unit-test. "Verification" = open in a browser, confirm rendering/responsiveness, and run grep gates for leftover placeholders. Commit after each task.
+
+**Spec:** `docs/superpowers/specs/2026-06-06-portfolio-design.md`
+
 ---
 
-### Task 1: Scaffold project files
+### Task 1: Add CSS for Experience timeline, gradient card banner, and "Also built" list
 
 **Files:**
-- Create: `.gitignore`
-- Create: `README.md`
-- Create: `assets/projects/.gitkeep`
+- Modify: `style.css` (append at end, after line 100)
 
-- [ ] **Step 1: Create `.gitignore`**
+- [ ] **Step 1: Append the new styles to `style.css`**
 
+Add these blocks at the end of the file (after the existing `@media` block). They reuse the existing CSS custom properties (`--accent`, `--surface`, `--border`, `--muted`, `--text`, `--gap`). The `.card__media` rule adds a gradient banner so cards look intentional without screenshots (real images can be dropped in later by replacing the banner markup with an `<img>`).
+
+```css
+
+/* EXPERIENCE */
+.timeline { display: flex; flex-direction: column; gap: 1.5rem; }
+.timeline__item { border-left: 2px solid var(--border); padding-left: 1.1rem; }
+.timeline__head { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: baseline; gap: 0.3rem; }
+.timeline__role { margin: 0; font-size: 1.05rem; }
+.timeline__org { color: var(--accent); }
+.timeline__dates { color: var(--muted); font-size: 0.85rem; white-space: nowrap; }
+.timeline__points { margin: 0.4rem 0 0; padding-left: 1.1rem; color: var(--muted); }
+.timeline__earlier { color: var(--muted); font-size: 0.9rem; margin-top: 0.5rem; }
+
+/* CARD BANNER (placeholder until real screenshots are added) */
+.card__media {
+  aspect-ratio: 16 / 9; display: flex; align-items: flex-end; padding: 0.8rem;
+  background: linear-gradient(135deg, color-mix(in srgb, var(--accent) 35%, var(--surface)), var(--surface));
+}
+.card__media span { font-weight: 700; color: var(--text); font-size: 0.95rem; }
+
+/* ALSO BUILT */
+.also__list { list-style: none; padding: 0; margin: 0; display: grid; gap: 0.8rem; }
+.also__list li { color: var(--muted); padding-left: 1.2rem; position: relative; }
+.also__list li::before { content: "\25B9"; position: absolute; left: 0; color: var(--accent); }
+.also__list strong { color: var(--text); font-weight: 600; }
 ```
-# OS / editor cruft
-.DS_Store
-Thumbs.db
-*.swp
-.vscode/
-.idea/
-```
 
-- [ ] **Step 2: Create `README.md`**
+- [ ] **Step 2: Verify CSS is valid**
 
-```markdown
-# hiiamhuy.github.io
+Run: `npx --yes csstree-validator style.css 2>/dev/null || echo "validator unavailable — skip"`
+Expected: no errors reported (or the skip message if the validator isn't installed). Either is acceptable.
 
-Personal portfolio site. Live at https://hiiamhuy.github.io
-
-Plain static HTML/CSS/JS — no build step. Edit `index.html` and `style.css`
-directly; push to `main` to deploy via GitHub Pages.
-
-- `resume.md` — résumé source of truth
-- `resume.pdf` — generated download (`pandoc resume.md -o resume.pdf`)
-```
-
-- [ ] **Step 3: Keep the assets dir tracked**
-
-Run: `mkdir -p assets/projects && touch assets/projects/.gitkeep && touch assets/favicon.svg`
-
-- [ ] **Step 4: Verify structure**
-
-Run: `ls -R . | grep -v .git`
-Expected: shows `.gitignore`, `README.md`, `assets/projects/.gitkeep`, `assets/favicon.svg`, `docs/...`
-
-- [ ] **Step 5: Commit**
+- [ ] **Step 3: Commit**
 
 ```bash
-git add -A
-git commit -m "chore: scaffold portfolio project files"
+git add style.css
+git commit -m "feat: add timeline, card banner, and also-built styles"
 ```
 
 ---
 
-### Task 2: Build the HTML structure
+### Task 2: Rewrite `index.html` with real content
 
 **Files:**
-- Create: `index.html`
+- Modify: `index.html` (full body replacement)
 
-- [ ] **Step 1: Write `index.html`**
+- [ ] **Step 1: Replace the entire contents of `index.html`**
 
-Sample/placeholder content is used (name, links, projects) — Task 6 replaces it with the owner's real content. Structure and class names here must match the CSS in Task 3 and the JS in Task 4.
+Write the file exactly as below. This sets the IT & Automation Specialist positioning, adds the Experience and "Also built" sections, fills the 3 real projects (gradient banners instead of `<img>`), real skills, and changes every email to `hiiamhuy@uw.edu`. The LinkedIn links keep a `data-edit="linkedin"` marker because the URL is still pending — leave it until the owner provides the URL (then replace `href="#"` and remove the marker).
 
 ```html
 <!DOCTYPE html>
@@ -79,8 +80,8 @@ Sample/placeholder content is used (name, links, projects) — Task 6 replaces i
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Huy Nguyen — Software Developer</title>
-  <meta name="description" content="Software developer portfolio — selected projects and résumé." />
+  <title>Huy Nguyen — IT &amp; Automation Specialist</title>
+  <meta name="description" content="Huy Nguyen — IT &amp; Automation Specialist. UW-IT service operations, web publishing, and AI/automation projects." />
   <link rel="icon" href="assets/favicon.svg" type="image/svg+xml" />
   <link rel="stylesheet" href="style.css" />
 </head>
@@ -88,6 +89,7 @@ Sample/placeholder content is used (name, links, projects) — Task 6 replaces i
   <header class="nav">
     <a class="nav__brand" href="#top">HN</a>
     <nav class="nav__links">
+      <a href="#experience">Experience</a>
       <a href="#projects">Projects</a>
       <a href="#skills">Skills</a>
       <a href="#contact">Contact</a>
@@ -101,15 +103,15 @@ Sample/placeholder content is used (name, links, projects) — Task 6 replaces i
     <section class="hero">
       <p class="hero__eyebrow">Hi, I'm</p>
       <h1 class="hero__name">Huy Nguyen</h1>
-      <p class="hero__title">Software Developer</p>
-      <p class="hero__tagline">I build clean, reliable web applications and developer tools.</p>
+      <p class="hero__title">IT &amp; Automation Specialist</p>
+      <p class="hero__tagline">I keep systems running and automate the tedious parts — from UW-IT service operations to AI-driven workflows.</p>
       <div class="hero__actions">
         <a class="btn btn--primary" href="resume.pdf" download>Download Résumé</a>
         <a class="btn" href="#projects">View Projects</a>
       </div>
       <ul class="hero__links">
         <li><a href="https://github.com/hiiamhuy">GitHub</a></li>
-        <li><a href="mailto:huynguyen206@gmail.com">Email</a></li>
+        <li><a href="mailto:hiiamhuy@uw.edu">Email</a></li>
         <li><a href="#" data-edit="linkedin">LinkedIn</a></li>
       </ul>
     </section>
@@ -118,9 +120,67 @@ Sample/placeholder content is used (name, links, projects) — Task 6 replaces i
     <section class="about" id="about">
       <h2 class="section__title">About</h2>
       <p>
-        Short 2–3 sentence intro goes here. Who you are, what you build, and what
-        kind of role you're looking for. (Replaced in Task 6.)
+        I'm a University of Washington graduate (BS Informatics, BA American Ethnic
+        Studies) with roughly a decade at UW-IT spanning Tier-1 support, web
+        publishing, and service operations. Today I focus on building AI and
+        automation tooling — speech-to-text pipelines, local LLM workflows, and
+        integrations that take repetitive work off people's plates. ITIL 4
+        Foundations certified, and equally comfortable in a ticket queue or a
+        terminal.
       </p>
+    </section>
+
+    <!-- EXPERIENCE -->
+    <section class="experience" id="experience">
+      <h2 class="section__title">Experience</h2>
+      <div class="timeline">
+
+        <article class="timeline__item">
+          <div class="timeline__head">
+            <h3 class="timeline__role">Senior Computer Specialist <span class="timeline__org">— UW-IT Service Center</span></h3>
+            <span class="timeline__dates">2019 – Present</span>
+          </div>
+          <ul class="timeline__points">
+            <li>Manage incidents to restore service quickly; author reference and FAQ articles for the Service Center knowledge base.</li>
+            <li>Designed and programmed ServiceNow forms and efficiency shortcuts; trained students in ServiceNow, email, web hosting, and account services.</li>
+          </ul>
+        </article>
+
+        <article class="timeline__item">
+          <div class="timeline__head">
+            <h3 class="timeline__role">Senior Computer Specialist, User Consulting Support <span class="timeline__org">— UW-IT</span></h3>
+            <span class="timeline__dates" data-edit="ucs-dates">[dates]</span>
+          </div>
+          <ul class="timeline__points">
+            <li>Managed web publishing for sites.uw.edu, Pantheon, and UW Shared Web Publishing, ensuring accessibility and usability.</li>
+            <li>Provided platform support and contributed internal documentation and best practices for web publishing workflows.</li>
+          </ul>
+        </article>
+
+        <article class="timeline__item">
+          <div class="timeline__head">
+            <h3 class="timeline__role">Identity &amp; Access Management Student Lead <span class="timeline__org">— UW-IT Service Center</span></h3>
+            <span class="timeline__dates">2014 – 2018</span>
+          </div>
+          <ul class="timeline__points">
+            <li>Approved non-standard account requests and maintained the Person Registry for all UW affiliations.</li>
+            <li>Developed scripts for batch account creation; triaged hardware/software issues and trained student consultants.</li>
+          </ul>
+        </article>
+
+        <article class="timeline__item">
+          <div class="timeline__head">
+            <h3 class="timeline__role">Student IT Consultant <span class="timeline__org">— UW-IT Service Center</span></h3>
+            <span class="timeline__dates">2013 – 2015</span>
+          </div>
+          <ul class="timeline__points">
+            <li>Provided Tier-1 support for UW affiliates; handled 50+ daily calls and emails for email, web hosting, account, and network issues.</li>
+            <li>Student lead for Unix/Mailman list management and pager/teleconferencing account operations.</li>
+          </ul>
+        </article>
+
+        <p class="timeline__earlier">Earlier: Web Intern, OCA-Greater Seattle (2015) · Digital Connector, Cisco (2010–2011).</p>
+      </div>
     </section>
 
     <!-- PROJECTS -->
@@ -128,60 +188,59 @@ Sample/placeholder content is used (name, links, projects) — Task 6 replaces i
       <h2 class="section__title">Featured Projects</h2>
       <div class="projects__grid">
 
-        <!-- PROJECT CARD TEMPLATE (duplicate per project, 4–6 total) -->
         <article class="card">
-          <div class="card__media">
-            <img src="assets/projects/placeholder.png" alt="Screenshot of Project One" loading="lazy" />
-          </div>
+          <div class="card__media" aria-hidden="true"><span>Call Center QA</span></div>
           <div class="card__body">
-            <h3 class="card__title">Project One</h3>
-            <p class="card__desc">One or two line description of what it does and why it's notable.</p>
+            <h3 class="card__title">Call Center QA — Transcription &amp; Analysis</h3>
+            <p class="card__desc">Automated pipeline that transcribes customer-service calls and scores quality with a local LLM. WhisperX handles speech-to-text and speaker diarization; Ollama (Llama 3.2) grades calls against a rubric and routes them to review queues — running on UW's Hyak cluster via SLURM and GPU containers.</p>
             <ul class="card__tags">
-              <li>TypeScript</li>
-              <li>React</li>
-              <li>Node</li>
+              <li>Python</li><li>WhisperX</li><li>Ollama</li><li>SLURM</li><li>Docker</li>
             </ul>
             <div class="card__links">
-              <a href="https://github.com/hiiamhuy/project-one">Repo</a>
-              <a href="#">Live demo</a>
+              <a href="https://github.com/hiiamhuy/uwitsc-call-analysis">Repo</a>
             </div>
           </div>
         </article>
 
         <article class="card">
-          <div class="card__media">
-            <img src="assets/projects/placeholder.png" alt="Screenshot of Project Two" loading="lazy" />
-          </div>
+          <div class="card__media" aria-hidden="true"><span>MRBS → TRMNL</span></div>
           <div class="card__body">
-            <h3 class="card__title">Project Two</h3>
-            <p class="card__desc">One or two line description.</p>
+            <h3 class="card__title">MRBS → TRMNL E-Ink Integration</h3>
+            <p class="card__desc">FastAPI service that pushes classroom booking schedules to e-ink displays. MRBS webhooks trigger real-time updates and a background scheduler keeps per-room and lobby displays current across ~30 rooms.</p>
             <ul class="card__tags">
-              <li>Python</li>
-              <li>Flask</li>
+              <li>FastAPI</li><li>SQLAlchemy</li><li>MySQL</li><li>Docker</li>
             </ul>
             <div class="card__links">
-              <a href="https://github.com/film35/project-two">Repo</a>
+              <a href="https://github.com/hiiamhuy/Yanko-MRBS-FASTAPI">Repo</a>
             </div>
           </div>
         </article>
 
         <article class="card">
-          <div class="card__media">
-            <img src="assets/projects/placeholder.png" alt="Screenshot of Project Three" loading="lazy" />
-          </div>
+          <div class="card__media" aria-hidden="true"><span>Storage Analysis</span></div>
           <div class="card__body">
-            <h3 class="card__title">Project Three</h3>
-            <p class="card__desc">One or two line description.</p>
+            <h3 class="card__title">Pantheon Storage Analysis</h3>
+            <p class="card__desc">Bash tool that audits storage for Pantheon-hosted sites. Auto-detects WordPress, Drupal, or generic platforms, breaks down usage across dev/test/live environments, and exports to JSON, CSV, HTML, and Markdown.</p>
             <ul class="card__tags">
-              <li>Go</li>
+              <li>Bash</li><li>Terminus</li><li>WP-CLI</li><li>Drush</li>
             </ul>
             <div class="card__links">
-              <a href="https://github.com/hiiamhuy/project-three">Repo</a>
+              <a href="https://github.com/hiiamhuy/storage-analysis">Repo</a>
             </div>
           </div>
         </article>
 
       </div>
+    </section>
+
+    <!-- ALSO BUILT -->
+    <section class="also" id="also">
+      <h2 class="section__title">Also built</h2>
+      <ul class="also__list">
+        <li><strong>QuickBooks + OCR bookkeeping automation</strong> — n8n workflow that creates accounting entries from invoices and receipts, extracting vendor/date/amount via OCR and handling duplicates and exceptions.</li>
+        <li><strong>OpenWeb UI call-center assistant</strong> — self-hosted, fully offline AI support tool using RAG with Ollama, deployed with Docker and Tailscale for secure access.</li>
+        <li><strong>Homelab storage builds</strong> — TrueNAS (ZFS) and unRAID servers with SMB/NFS sharing, plus a 3-2-1 backup strategy using Rclone and offsite cloud storage.</li>
+      </ul>
     </section>
 
     <!-- SKILLS -->
@@ -190,15 +249,15 @@ Sample/placeholder content is used (name, links, projects) — Task 6 replaces i
       <div class="skills__groups">
         <div class="skills__group">
           <h3>Languages</h3>
-          <ul><li>JavaScript / TypeScript</li><li>Python</li><li>Go</li></ul>
+          <ul><li>Python</li><li>JavaScript</li><li>HTML / CSS</li><li>SQL</li><li>Bash</li></ul>
         </div>
         <div class="skills__group">
-          <h3>Frameworks</h3>
-          <ul><li>React</li><li>Node / Express</li><li>Flask</li></ul>
+          <h3>AI &amp; Automation</h3>
+          <ul><li>WhisperX</li><li>Ollama</li><li>RAG</li><li>n8n</li><li>LM Studio</li><li>OpenWeb UI</li></ul>
         </div>
         <div class="skills__group">
-          <h3>Tools</h3>
-          <ul><li>Git</li><li>Docker</li><li>Linux</li></ul>
+          <h3>Platforms &amp; Tools</h3>
+          <ul><li>Docker</li><li>Linux</li><li>Pantheon</li><li>ServiceNow</li><li>Tailscale</li><li>Git</li></ul>
         </div>
       </div>
     </section>
@@ -207,11 +266,11 @@ Sample/placeholder content is used (name, links, projects) — Task 6 replaces i
   <footer class="footer" id="contact">
     <h2 class="section__title">Get in touch</h2>
     <ul class="footer__links">
-      <li><a href="mailto:huynguyen206@gmail.com">huynguyen206@gmail.com</a></li>
+      <li><a href="mailto:hiiamhuy@uw.edu">hiiamhuy@uw.edu</a></li>
       <li><a href="https://github.com/hiiamhuy">github.com/hiiamhuy</a></li>
       <li><a href="#" data-edit="linkedin">LinkedIn</a></li>
     </ul>
-    <p class="footer__note">© 2026 Huy Nguyen. Built with plain HTML & CSS.</p>
+    <p class="footer__note">ITIL 4 Foundations certified · © 2026 Huy Nguyen. Built with plain HTML &amp; CSS.</p>
   </footer>
 
   <script src="main.js"></script>
@@ -219,324 +278,138 @@ Sample/placeholder content is used (name, links, projects) — Task 6 replaces i
 </html>
 ```
 
-- [ ] **Step 2: Verify it renders**
+- [ ] **Step 2: Verify it renders in a browser**
 
-Run: `xdg-open index.html` (or open the file in a browser)
-Expected: page shows nav, hero with name/buttons, three project cards (broken image placeholders are fine for now), skills, footer. No console errors except missing `placeholder.png`/`style.css` until later tasks.
+Run: `xdg-open index.html` (or open the file manually)
+Expected: hero shows "IT & Automation Specialist" and the new tagline; an Experience timeline with four roles + an "earlier" line; three project cards with gradient banners (no broken images) linking to the correct repos; an "Also built" list; the three skill groups; footer shows `hiiamhuy@uw.edu` and the ITIL note. Theme toggle and nav links still work. No console errors.
 
-- [ ] **Step 3: Commit**
+- [ ] **Step 3: Grep gate — confirm no scaffold leftovers and the right email**
+
+Run: `grep -n "Project One\|placeholder.png\|film35\|huynguyen206\|Short 2–3 sentence" index.html || echo "CLEAN"`
+Expected: `CLEAN`
+
+Run: `grep -c "hiiamhuy@uw.edu" index.html`
+Expected: `2` (hero + footer)
+
+- [ ] **Step 4: Commit**
 
 ```bash
 git add index.html
-git commit -m "feat: add portfolio HTML structure"
+git commit -m "content: real hero, experience, projects, skills, and uw.edu email"
 ```
 
 ---
 
-### Task 3: Style the site
+### Task 3: Rewrite `resume.md` and regenerate `resume.pdf`
 
 **Files:**
-- Create: `style.css`
+- Modify: `resume.md`
+- Modify: `resume.pdf` (regenerated)
 
-- [ ] **Step 1: Write `style.css`**
-
-Uses CSS custom properties so the `data-theme` attribute (toggled in Task 4) swaps colors. Class names match Task 2 exactly.
-
-```css
-:root {
-  --max-width: 920px;
-  --accent: #6ea8fe;
-  --radius: 12px;
-  --gap: 1.5rem;
-  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-}
-
-html[data-theme="dark"] {
-  --bg: #0f1115;
-  --surface: #181b22;
-  --text: #e8eaed;
-  --muted: #9aa0aa;
-  --border: #2a2e37;
-}
-html[data-theme="light"] {
-  --bg: #ffffff;
-  --surface: #f5f6f8;
-  --text: #1a1d22;
-  --muted: #5b616b;
-  --border: #e2e5ea;
-}
-
-* { box-sizing: border-box; }
-body {
-  margin: 0;
-  background: var(--bg);
-  color: var(--text);
-  line-height: 1.6;
-}
-a { color: var(--accent); text-decoration: none; }
-a:hover { text-decoration: underline; }
-
-/* NAV */
-.nav {
-  position: sticky; top: 0; z-index: 10;
-  display: flex; justify-content: space-between; align-items: center;
-  padding: 0.9rem 1.25rem;
-  background: color-mix(in srgb, var(--bg) 85%, transparent);
-  backdrop-filter: blur(8px);
-  border-bottom: 1px solid var(--border);
-}
-.nav__brand { font-weight: 700; color: var(--text); }
-.nav__links { display: flex; align-items: center; gap: 1.1rem; }
-.nav__resume { border: 1px solid var(--accent); padding: 0.3rem 0.7rem; border-radius: 999px; }
-.nav__theme { background: none; border: none; color: var(--text); font-size: 1.1rem; cursor: pointer; }
-
-/* LAYOUT */
-main, .footer { max-width: var(--max-width); margin: 0 auto; padding: 0 1.25rem; }
-section { padding: 4rem 0 2rem; }
-.section__title { font-size: 1.5rem; margin-bottom: 1.25rem; }
-
-/* HERO */
-.hero { padding-top: 5rem; }
-.hero__eyebrow { color: var(--muted); margin: 0; }
-.hero__name { font-size: clamp(2.2rem, 6vw, 3.5rem); margin: 0.2rem 0; }
-.hero__title { font-size: 1.3rem; color: var(--accent); margin: 0; }
-.hero__tagline { color: var(--muted); max-width: 40ch; }
-.hero__actions { display: flex; gap: 0.8rem; margin: 1.5rem 0; flex-wrap: wrap; }
-.hero__links { display: flex; gap: 1.2rem; list-style: none; padding: 0; }
-
-.btn {
-  display: inline-block; padding: 0.6rem 1.1rem; border-radius: var(--radius);
-  border: 1px solid var(--border); color: var(--text); font-weight: 600;
-}
-.btn:hover { text-decoration: none; border-color: var(--accent); }
-.btn--primary { background: var(--accent); color: #0f1115; border-color: var(--accent); }
-
-/* PROJECTS */
-.projects__grid {
-  display: grid; gap: var(--gap);
-  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
-}
-.card {
-  background: var(--surface); border: 1px solid var(--border);
-  border-radius: var(--radius); overflow: hidden;
-  display: flex; flex-direction: column; transition: transform .15s ease, border-color .15s ease;
-}
-.card:hover { transform: translateY(-3px); border-color: var(--accent); }
-.card__media img { width: 100%; aspect-ratio: 16/9; object-fit: cover; display: block; background: var(--border); }
-.card__body { padding: 1rem; display: flex; flex-direction: column; gap: 0.6rem; flex: 1; }
-.card__title { margin: 0; }
-.card__desc { color: var(--muted); margin: 0; flex: 1; }
-.card__tags { display: flex; flex-wrap: wrap; gap: 0.4rem; list-style: none; padding: 0; margin: 0; }
-.card__tags li { font-size: 0.75rem; padding: 0.15rem 0.55rem; border: 1px solid var(--border); border-radius: 999px; color: var(--muted); }
-.card__links { display: flex; gap: 1rem; }
-
-/* SKILLS */
-.skills__groups { display: grid; gap: var(--gap); grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); }
-.skills__group ul { list-style: none; padding: 0; color: var(--muted); }
-.skills__group h3 { margin-bottom: 0.5rem; }
-
-/* FOOTER */
-.footer { padding: 3rem 1.25rem 4rem; border-top: 1px solid var(--border); margin-top: 3rem; }
-.footer__links { display: flex; flex-wrap: wrap; gap: 1.2rem; list-style: none; padding: 0; }
-.footer__note { color: var(--muted); font-size: 0.85rem; }
-
-@media (max-width: 520px) {
-  .nav__links { gap: 0.7rem; font-size: 0.9rem; }
-}
-```
-
-- [ ] **Step 2: Verify styling**
-
-Run: reload `index.html` in the browser.
-Expected: dark theme, sticky blurred nav, large hero, cards in a responsive grid that hover-lift, pill-shaped tags. Resize the window narrow — grid collapses to one column, nav stays usable.
-
-- [ ] **Step 3: Commit**
-
-```bash
-git add style.css
-git commit -m "feat: add portfolio styling with light/dark theme vars"
-```
-
----
-
-### Task 4: Add interactivity (`main.js`)
-
-**Files:**
-- Create: `main.js`
-
-- [ ] **Step 1: Write `main.js`**
-
-```js
-// Smooth scroll for in-page anchor links
-document.querySelectorAll('a[href^="#"]').forEach((link) => {
-  link.addEventListener('click', (e) => {
-    const target = document.querySelector(link.getAttribute('href'));
-    if (target) {
-      e.preventDefault();
-      target.scrollIntoView({ behavior: 'smooth' });
-    }
-  });
-});
-
-// Theme toggle with persistence
-const root = document.documentElement;
-const toggle = document.getElementById('theme-toggle');
-const saved = localStorage.getItem('theme');
-if (saved) root.setAttribute('data-theme', saved);
-
-toggle?.addEventListener('click', () => {
-  const next = root.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
-  root.setAttribute('data-theme', next);
-  localStorage.setItem('theme', next);
-});
-```
-
-- [ ] **Step 2: Verify behavior**
-
-Run: reload `index.html`.
-Expected: clicking nav links (Projects/Skills/Contact) smooth-scrolls. Clicking the ◐ button flips dark↔light and the choice survives a page reload. No console errors.
-
-- [ ] **Step 3: Commit**
-
-```bash
-git add main.js
-git commit -m "feat: add smooth-scroll nav and persistent theme toggle"
-```
-
----
-
-### Task 5: Résumé source + PDF
-
-**Files:**
-- Create: `resume.md`
-- Create: `resume.pdf` (generated)
-
-- [ ] **Step 1: Create `resume.md` skeleton**
-
-Owner pastes their real résumé content here in Task 6. This is a valid starter so the PDF export works.
+- [ ] **Step 1: Replace the entire contents of `resume.md`**
 
 ```markdown
 # Huy Nguyen
-Software Developer · huynguyen206@gmail.com · github.com/hiiamhuy
+IT & Automation Specialist · Seattle, WA
+hiiamhuy@uw.edu · github.com/hiiamhuy
 
 ## Summary
-One-paragraph professional summary.
+IT and automation specialist with ~10 years at UW-IT across Tier-1 support, web
+publishing, and service operations. Builds AI/automation tooling — speech-to-text
+pipelines, local LLM workflows, and integrations that remove repetitive work.
+ITIL 4 Foundations certified.
 
 ## Experience
-**Role — Company** (dates)
-- Accomplishment with impact/metric.
+
+**Senior Computer Specialist — UW-IT Service Center** (2019 – Present)
+- Manage incidents to restore normal service operations quickly, minimizing impact.
+- Author reference and FAQ articles for the Service Center knowledge base.
+- Designed and programmed ServiceNow forms and efficiency shortcuts.
+- Trained students in ServiceNow, email, web hosting, and account services.
+
+**Senior Computer Specialist, User Consulting Support — UW-IT** ([dates])
+- Managed web publishing for sites.uw.edu, Pantheon, and UW Shared Web Publishing.
+- Provided platform support and authored internal best-practice documentation.
+
+**Identity & Access Management Student Lead — UW-IT Service Center** (2014 – 2018)
+- Approved non-standard account requests; maintained the Person Registry for all UW affiliations.
+- Developed scripts for batch account creation; trained student consultants.
+
+**Student IT Consultant — UW-IT Service Center** (2013 – 2015)
+- Provided Tier-1 support; handled 50+ daily calls/emails for email, web, account, and network issues.
+- Student lead for Unix/Mailman list management and pager/teleconferencing operations.
+
+Earlier: Web Intern, OCA-Greater Seattle (2015) · Digital Connector, Cisco (2010–2011).
 
 ## Projects
-- **Project One** — what it does, tech used.
+- **Call Center QA — Transcription & Analysis** — WhisperX speech-to-text + speaker diarization and Ollama (Llama 3.2) rubric scoring on UW Hyak (SLURM/GPU). Python, Docker.
+- **MRBS → TRMNL E-Ink Integration** — FastAPI service pushing classroom schedules to e-ink displays via webhooks + scheduler. SQLAlchemy, MySQL, Docker.
+- **Pantheon Storage Analysis** — Bash tool with platform auto-detection (WordPress/Drupal) and multi-format export.
+- **QuickBooks + OCR automation** — n8n workflow for receipt OCR and automated bookkeeping entries.
+- **OpenWeb UI call-center assistant** — offline RAG assistant with Ollama, Docker, and Tailscale.
 
 ## Skills
-JavaScript/TypeScript, Python, Go, React, Node, Docker, Git, Linux.
+Python, JavaScript, HTML/CSS, SQL, Bash · WhisperX, Ollama, RAG, n8n, LM Studio,
+OpenWeb UI · Docker, Linux, Pantheon, ServiceNow, Tailscale, Git · TrueNAS, unRAID
 
 ## Education
-Degree — Institution (year)
+University of Washington — BS Informatics (2018)
+University of Washington — BA American Ethnic Studies (2018)
+
+## Certification
+ITIL 4 Foundations
 ```
 
-- [ ] **Step 2: Generate the PDF**
+- [ ] **Step 2: Regenerate `resume.pdf`**
 
-Run (if pandoc + a LaTeX engine are installed):
-`pandoc resume.md -o resume.pdf`
-Expected: `resume.pdf` created.
+Run: `pandoc resume.md -o resume.pdf && ls -la resume.pdf`
+Expected: `resume.pdf` exists with non-zero size.
 
-If pandoc is NOT available, fallback: open `resume.md` in VS Code with the "Markdown PDF" extension and export, OR print-to-PDF from a browser preview. Confirm `resume.pdf` exists:
-Run: `ls -la resume.pdf`
-Expected: file present, non-zero size.
+If pandoc (or its PDF engine) is unavailable, fallback: open `resume.md` in VS Code with the "Markdown PDF" extension and export to `resume.pdf`, or print-to-PDF from a browser preview. Then re-run `ls -la resume.pdf` and confirm a non-zero file.
 
-- [ ] **Step 3: Verify the download link works**
+- [ ] **Step 3: Verify the download link**
 
 Run: reload `index.html`, click "Download Résumé".
-Expected: `resume.pdf` opens/downloads.
+Expected: the regenerated `resume.pdf` opens/downloads and shows the real content with `hiiamhuy@uw.edu`.
 
 - [ ] **Step 4: Commit**
 
 ```bash
 git add resume.md resume.pdf
-git commit -m "feat: add résumé source and generated PDF"
+git commit -m "content: rewrite résumé with real experience and uw.edu email"
 ```
 
 ---
 
-### Task 6: Populate real content
-
-This is the content-gathering task. Collect from the owner and replace all placeholder text. **Do not invent facts** — ask the owner for each item.
-
-**Files:**
-- Modify: `index.html`
-- Modify: `resume.md` (then regenerate `resume.pdf`)
-- Add: `assets/projects/*.png` screenshots
-
-- [ ] **Step 1: Collect content from the owner**
-
-Gather:
-- Tagline + 2–3 sentence About text.
-- LinkedIn URL (replace both `data-edit="linkedin"` links; remove if none).
-- 4–6 featured projects: title, description, tech tags, repo URL (hiiamhuy or film35), live-demo URL (omit the demo link if none), screenshot image.
-- Real skills lists.
-- Full résumé content for `resume.md`.
-
-- [ ] **Step 2: Replace placeholders in `index.html`**
-
-For each project card: update `card__title`, `card__desc`, `card__tags`, `card__links` href(s), and the `<img src>` + `alt`. Add or remove `<article class="card">` blocks so there are 4–6. Update hero tagline, About paragraph, skills, and LinkedIn hrefs. Remove any `data-edit="linkedin"` placeholder you didn't fill.
-
-- [ ] **Step 3: Add screenshots**
-
-Place each image in `assets/projects/` and point the card `<img src>` at it. Recommended ~1200×675 (16:9) PNG/JPG.
-
-- [ ] **Step 4: Update résumé + regenerate PDF**
-
-Edit `resume.md` with real content, then re-run the Task 5 Step 2 export.
-
-- [ ] **Step 5: Verify final content**
-
-Run: reload `index.html`.
-Expected: all real text, working repo links (click each — they resolve to the right account), screenshots load, no leftover "Project One"/placeholder strings.
-Run: `grep -n "placeholder\|Project One\|data-edit" index.html`
-Expected: no matches (or only intentional ones).
-
-- [ ] **Step 6: Commit**
-
-```bash
-git add -A
-git commit -m "content: add real projects, about, skills, and résumé"
-```
-
----
-
-### Task 7: Deploy to GitHub Pages
+### Task 4: Deploy to GitHub Pages
 
 **Files:** none (remote setup)
 
-- [ ] **Step 1: Create the repo on GitHub**
+- [ ] **Step 1: Confirm remote**
 
-The repo MUST be named exactly `hiiamhuy.github.io` and owned by the `hiiamhuy` account (this triggers root-URL user Pages).
-Run (if `gh` is installed and authed as hiiamhuy):
-`gh repo create hiiamhuy.github.io --public --source=. --remote=origin`
-Otherwise: create it manually at github.com, then:
+Run: `git remote -v`
+Expected: either an `origin` pointing at `github.com:hiiamhuy/hiiamhuy.github.io`, or no output.
+
+If there is NO remote, create/link it. With `gh` installed and authed as `hiiamhuy`:
+`gh repo create hiiamhuy.github.io --public --source=. --remote=origin --push`
+Otherwise create the repo manually on github.com (named exactly `hiiamhuy.github.io`), then:
 `git remote add origin git@github.com:hiiamhuy/hiiamhuy.github.io.git`
 
-- [ ] **Step 2: Push**
+- [ ] **Step 2: Push `main`**
 
-```bash
-git push -u origin main
-```
+Run: `git push -u origin main`
 Expected: branch `main` pushed to origin.
 
 - [ ] **Step 3: Enable Pages**
 
-In the repo: Settings → Pages → Build and deployment → Source = "Deploy from a branch", Branch = `main`, folder = `/ (root)` → Save.
-(For a `*.github.io` user repo, Pages is often auto-enabled on push — verify the setting regardless.)
+In the repo: Settings → Pages → Source = "Deploy from a branch", Branch = `main`, folder = `/ (root)` → Save. (For a `*.github.io` user repo this is often auto-enabled — verify regardless.)
 
-- [ ] **Step 4: Verify live site**
+- [ ] **Step 4: Verify the live site**
 
 Wait ~1–2 min, then visit `https://hiiamhuy.github.io`.
-Expected: site loads with HTTPS, all sections render, résumé downloads, project links work, theme toggle works.
-Run a Lighthouse audit (Chrome DevTools → Lighthouse) — aim for 90+ on Accessibility and Best Practices.
+Expected: site loads over HTTPS; all sections render; résumé downloads; the three repo links resolve to the correct repos; theme toggle works. Optionally run Chrome DevTools → Lighthouse and aim for 90+ on Accessibility and Best Practices.
 
-- [ ] **Step 5: Final commit (if any fixes)**
+- [ ] **Step 5: Final commit (only if post-deploy fixes were needed)**
 
 ```bash
 git add -A
@@ -548,6 +421,8 @@ git push
 
 ## Self-Review Notes
 
-- **Spec coverage:** hosting/URL (T1,T7) ✓, stack/file layout (T1–T5) ✓, all 5 page sections (T2) ✓, résumé md→pdf (T5) ✓, design quality/responsive/theme (T3,T4) ✓, deploy flow (T7) ✓, curated cross-account projects (T2,T6) ✓, excluded sections honored (no blog/timeline) ✓.
-- **Placeholders:** sample content in T2 is intentional and explicitly removed in T6 (with a `grep` gate). No "TBD"/"implement later" steps.
-- **Consistency:** class names (`card`, `card__title`, `nav__theme`, `data-theme`, `theme-toggle`) match across HTML (T2), CSS (T3), and JS (T4).
+- **Spec coverage:** positioning/hero (T2) ✓; About (T2) ✓; Experience timeline incl. placeholder date (T1 CSS, T2 markup) ✓; 3 featured projects with real repo URLs (T2) ✓; "Also built" list (T1 CSS, T2 markup) ✓; skills three groups (T2) ✓; footer/contact with `hiiamhuy@uw.edu` + ITIL note (T2) ✓; email change everywhere incl. résumé (T2, T3) ✓; drop `film35` (T2 grep gate) ✓; résumé md→pdf rewrite (T3) ✓; deploy (T4) ✓.
+- **Placeholders:** Two intentional, spec-listed placeholders remain marked with `data-edit`: LinkedIn URL (`data-edit="linkedin"`) and the User Consulting Support dates (`data-edit="ucs-dates"` / `[dates]`). These are explicitly non-blocking open items in the spec, not plan gaps. No "TBD"/"implement later" steps.
+- **Consistency:** class names match across CSS (T1) and HTML (T2): `timeline`, `timeline__item`, `timeline__head`, `timeline__role`, `timeline__org`, `timeline__dates`, `timeline__points`, `timeline__earlier`, `card__media`/`span`, `also__list`. Existing classes (`card`, `card__body`, `section__title`, `data-theme`, `theme-toggle`) reused unchanged.
+- **Banner vs. image:** cards intentionally use a gradient `.card__media` banner instead of `<img src="placeholder.png">`, eliminating broken images; real screenshots can replace the banner later (noted in spec open items).
+```
