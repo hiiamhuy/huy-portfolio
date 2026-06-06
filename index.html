@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Huy Nguyen — Software Developer</title>
+  <meta name="description" content="Software developer portfolio — selected projects and résumé." />
+  <link rel="icon" href="assets/favicon.svg" type="image/svg+xml" />
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <header class="nav">
+    <a class="nav__brand" href="#top">HN</a>
+    <nav class="nav__links">
+      <a href="#projects">Projects</a>
+      <a href="#skills">Skills</a>
+      <a href="#contact">Contact</a>
+      <a class="nav__resume" href="resume.pdf" download>Résumé</a>
+      <button id="theme-toggle" class="nav__theme" aria-label="Toggle color theme">◐</button>
+    </nav>
+  </header>
+
+  <main id="top">
+    <!-- HERO -->
+    <section class="hero">
+      <p class="hero__eyebrow">Hi, I'm</p>
+      <h1 class="hero__name">Huy Nguyen</h1>
+      <p class="hero__title">Software Developer</p>
+      <p class="hero__tagline">I build clean, reliable web applications and developer tools.</p>
+      <div class="hero__actions">
+        <a class="btn btn--primary" href="resume.pdf" download>Download Résumé</a>
+        <a class="btn" href="#projects">View Projects</a>
+      </div>
+      <ul class="hero__links">
+        <li><a href="https://github.com/hiiamhuy">GitHub</a></li>
+        <li><a href="mailto:huynguyen206@gmail.com">Email</a></li>
+        <li><a href="#" data-edit="linkedin">LinkedIn</a></li>
+      </ul>
+    </section>
+
+    <!-- ABOUT -->
+    <section class="about" id="about">
+      <h2 class="section__title">About</h2>
+      <p>
+        Short 2–3 sentence intro goes here. Who you are, what you build, and what
+        kind of role you're looking for. (Replaced in Task 6.)
+      </p>
+    </section>
+
+    <!-- PROJECTS -->
+    <section class="projects" id="projects">
+      <h2 class="section__title">Featured Projects</h2>
+      <div class="projects__grid">
+
+        <!-- PROJECT CARD TEMPLATE (duplicate per project, 4–6 total) -->
+        <article class="card">
+          <div class="card__media">
+            <img src="assets/projects/placeholder.png" alt="Screenshot of Project One" loading="lazy" />
+          </div>
+          <div class="card__body">
+            <h3 class="card__title">Project One</h3>
+            <p class="card__desc">One or two line description of what it does and why it's notable.</p>
+            <ul class="card__tags">
+              <li>TypeScript</li>
+              <li>React</li>
+              <li>Node</li>
+            </ul>
+            <div class="card__links">
+              <a href="https://github.com/hiiamhuy/project-one">Repo</a>
+              <a href="#">Live demo</a>
+            </div>
+          </div>
+        </article>
+
+        <article class="card">
+          <div class="card__media">
+            <img src="assets/projects/placeholder.png" alt="Screenshot of Project Two" loading="lazy" />
+          </div>
+          <div class="card__body">
+            <h3 class="card__title">Project Two</h3>
+            <p class="card__desc">One or two line description.</p>
+            <ul class="card__tags">
+              <li>Python</li>
+              <li>Flask</li>
+            </ul>
+            <div class="card__links">
+              <a href="https://github.com/film35/project-two">Repo</a>
+            </div>
+          </div>
+        </article>
+
+        <article class="card">
+          <div class="card__media">
+            <img src="assets/projects/placeholder.png" alt="Screenshot of Project Three" loading="lazy" />
+          </div>
+          <div class="card__body">
+            <h3 class="card__title">Project Three</h3>
+            <p class="card__desc">One or two line description.</p>
+            <ul class="card__tags">
+              <li>Go</li>
+            </ul>
+            <div class="card__links">
+              <a href="https://github.com/hiiamhuy/project-three">Repo</a>
+            </div>
+          </div>
+        </article>
+
+      </div>
+    </section>
+
+    <!-- SKILLS -->
+    <section class="skills" id="skills">
+      <h2 class="section__title">Skills</h2>
+      <div class="skills__groups">
+        <div class="skills__group">
+          <h3>Languages</h3>
+          <ul><li>JavaScript / TypeScript</li><li>Python</li><li>Go</li></ul>
+        </div>
+        <div class="skills__group">
+          <h3>Frameworks</h3>
+          <ul><li>React</li><li>Node / Express</li><li>Flask</li></ul>
+        </div>
+        <div class="skills__group">
+          <h3>Tools</h3>
+          <ul><li>Git</li><li>Docker</li><li>Linux</li></ul>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer" id="contact">
+    <h2 class="section__title">Get in touch</h2>
+    <ul class="footer__links">
+      <li><a href="mailto:huynguyen206@gmail.com">huynguyen206@gmail.com</a></li>
+      <li><a href="https://github.com/hiiamhuy">github.com/hiiamhuy</a></li>
+      <li><a href="#" data-edit="linkedin">LinkedIn</a></li>
+    </ul>
+    <p class="footer__note">© 2026 Huy Nguyen. Built with plain HTML & CSS.</p>
+  </footer>
+
+  <script src="main.js"></script>
+</body>
+</html>
