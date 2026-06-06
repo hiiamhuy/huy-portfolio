@@ -72,7 +72,7 @@ git commit -m "feat: add timeline, card banner, and also-built styles"
 
 - [ ] **Step 1: Replace the entire contents of `index.html`**
 
-Write the file exactly as below. This sets the IT & Automation Specialist positioning, adds the Experience and "Also built" sections, fills the 3 real projects (gradient banners instead of `<img>`), real skills, and changes every email to `hiiamhuy@uw.edu`. The LinkedIn links keep a `data-edit="linkedin"` marker because the URL is still pending — leave it until the owner provides the URL (then replace `href="#"` and remove the marker).
+Write the file exactly as below. This sets the IT & Automation Specialist positioning, adds the Experience and "Also built" sections, fills the 3 real projects (gradient banners instead of `<img>`), real skills, and changes every email to `hiiamhuy@uw.edu`. LinkedIn is omitted entirely (no URL). The User Consulting Support dates stay as a `[dates]` placeholder marked with `data-edit="ucs-dates"`.
 
 ```html
 <!DOCTYPE html>
@@ -112,7 +112,6 @@ Write the file exactly as below. This sets the IT & Automation Specialist positi
       <ul class="hero__links">
         <li><a href="https://github.com/hiiamhuy">GitHub</a></li>
         <li><a href="mailto:hiiamhuy@uw.edu">Email</a></li>
-        <li><a href="#" data-edit="linkedin">LinkedIn</a></li>
       </ul>
     </section>
 
@@ -268,7 +267,6 @@ Write the file exactly as below. This sets the IT & Automation Specialist positi
     <ul class="footer__links">
       <li><a href="mailto:hiiamhuy@uw.edu">hiiamhuy@uw.edu</a></li>
       <li><a href="https://github.com/hiiamhuy">github.com/hiiamhuy</a></li>
-      <li><a href="#" data-edit="linkedin">LinkedIn</a></li>
     </ul>
     <p class="footer__note">ITIL 4 Foundations certified · © 2026 Huy Nguyen. Built with plain HTML &amp; CSS.</p>
   </footer>
@@ -285,7 +283,7 @@ Expected: hero shows "IT & Automation Specialist" and the new tagline; an Experi
 
 - [ ] **Step 3: Grep gate — confirm no scaffold leftovers and the right email**
 
-Run: `grep -n "Project One\|placeholder.png\|film35\|huynguyen206\|Short 2–3 sentence" index.html || echo "CLEAN"`
+Run: `grep -n "Project One\|placeholder.png\|film35\|huynguyen206\|Short 2–3 sentence\|data-edit=\"linkedin\"\|>LinkedIn<" index.html || echo "CLEAN"`
 Expected: `CLEAN`
 
 Run: `grep -c "hiiamhuy@uw.edu" index.html`
@@ -422,7 +420,7 @@ git push
 ## Self-Review Notes
 
 - **Spec coverage:** positioning/hero (T2) ✓; About (T2) ✓; Experience timeline incl. placeholder date (T1 CSS, T2 markup) ✓; 3 featured projects with real repo URLs (T2) ✓; "Also built" list (T1 CSS, T2 markup) ✓; skills three groups (T2) ✓; footer/contact with `hiiamhuy@uw.edu` + ITIL note (T2) ✓; email change everywhere incl. résumé (T2, T3) ✓; drop `film35` (T2 grep gate) ✓; résumé md→pdf rewrite (T3) ✓; deploy (T4) ✓.
-- **Placeholders:** Two intentional, spec-listed placeholders remain marked with `data-edit`: LinkedIn URL (`data-edit="linkedin"`) and the User Consulting Support dates (`data-edit="ucs-dates"` / `[dates]`). These are explicitly non-blocking open items in the spec, not plan gaps. No "TBD"/"implement later" steps.
+- **Placeholders:** LinkedIn is removed entirely per the owner's decision. One intentional placeholder remains: the User Consulting Support dates (`data-edit="ucs-dates"` / `[dates]`), an explicitly non-blocking open item in the spec, not a plan gap. No "TBD"/"implement later" steps.
 - **Consistency:** class names match across CSS (T1) and HTML (T2): `timeline`, `timeline__item`, `timeline__head`, `timeline__role`, `timeline__org`, `timeline__dates`, `timeline__points`, `timeline__earlier`, `card__media`/`span`, `also__list`. Existing classes (`card`, `card__body`, `section__title`, `data-theme`, `theme-toggle`) reused unchanged.
 - **Banner vs. image:** cards intentionally use a gradient `.card__media` banner instead of `<img src="placeholder.png">`, eliminating broken images; real screenshots can replace the banner later (noted in spec open items).
 ```
