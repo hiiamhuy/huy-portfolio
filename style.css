@@ -121,3 +121,24 @@ section { padding: 4rem 0 2rem; }
 .also__list li { color: var(--muted); padding-left: 1.2rem; position: relative; }
 .also__list li::before { content: "\25B9"; position: absolute; left: 0; color: var(--accent); }
 .also__list strong { color: var(--text); font-weight: 600; }
+
+/* CASE STUDY PAGES */
+.subnav .nav__brand { font-weight: 600; }
+.case { padding-top: 2rem; padding-bottom: 4rem; }
+.case__eyebrow { color: var(--muted); font-size: 0.85rem; margin: 0; }
+.case__eyebrow a { color: var(--muted); }
+.case h1 { font-size: clamp(1.8rem, 5vw, 2.6rem); margin: 0.3rem 0; }
+.case__subtitle { color: var(--muted); font-size: 1.1rem; max-width: 65ch; margin: 0.2rem 0 0; }
+.case__tags { margin: 1rem 0 2rem; }
+.case h2 { font-size: 1.4rem; margin-top: 2.5rem; border-top: 1px solid var(--border); padding-top: 1.5rem; }
+.case h3 { font-size: 1.1rem; margin-top: 1.5rem; }
+.case p, .case li { max-width: 70ch; }
+.case table { width: 100%; border-collapse: collapse; margin: 1.25rem 0; font-size: 0.92rem; }
+.case th, .case td { border: 1px solid var(--border); padding: 0.5rem 0.7rem; text-align: left; vertical-align: top; }
+.case th { background: var(--surface); }
+.diagram { background: #0f1115; border: 1px solid var(--border); border-radius: var(--radius); padding: 1rem; margin: 1.5rem 0; overflow-x: auto; }
+.diagram img { max-width: 100%; height: auto; display: block; margin: 0 auto; }
+.diagram figcaption { color: var(--muted); font-size: 0.85rem; text-align: center; margin-top: 0.6rem; }
+.case__placeholder { border: 1px dashed var(--border); border-radius: var(--radius); padding: 1rem 1.2rem; color: var(--muted); background: var(--surface); margin: 1.5rem 0; }
+.case__foot { display: flex; gap: 1rem; flex-wrap: wrap; margin-top: 3rem; border-top: 1px solid var(--border); padding-top: 2rem; }
+.case__ack { color: var(--muted); font-size: 0.85rem; font-style: italic; margin-top: 2rem; }
