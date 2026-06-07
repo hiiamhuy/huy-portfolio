@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>MRBS → TRMNL E-Ink Integration — Huy Nguyen</title>
+  <meta name="description" content="A FastAPI service that puts live classroom booking schedules on e-ink displays outside every room." />
+  <link rel="icon" href="../assets/favicon.svg" type="image/svg+xml" />
+  <link rel="stylesheet" href="../style.css" />
+</head>
+<body>
+  <header class="nav subnav">
+    <a class="nav__brand" href="../index.html#projects">← Portfolio</a>
+    <nav class="nav__links">
+      <a class="nav__resume" href="../resume.pdf" download>Resume</a>
+      <button id="theme-toggle" class="nav__theme" aria-label="Toggle color theme">◐</button>
+    </nav>
+  </header>
+
+  <main id="top" class="case">
+    <p class="case__eyebrow"><a href="../index.html#projects">Projects</a> / MRBS → TRMNL</p>
+    <h1>MRBS → TRMNL E-Ink Integration</h1>
+    <p class="case__subtitle">Putting live classroom schedules on cheap e-ink displays outside every room.</p>
+    <ul class="card__tags case__tags">
+      <li>FastAPI</li><li>SQLAlchemy</li><li>Pydantic</li><li>MySQL</li><li>Docker</li>
+    </ul>
+
+    <h2>The problem</h2>
+    <p>
+      Picture a building with around <strong>30 classrooms</strong>. Outside each door
+      you want a small, always-on display showing that room's schedule for the day —
+      what's booked, what's free, what's next. In the lobby you want a board showing
+      every room's availability at a glance. The bookings already live in
+      <a href="https://mrbs.sourceforge.io/">MRBS</a> (Meeting Room Booking System);
+      the hard part is getting that information onto the displays and keeping it
+      current without anyone updating screens by hand.
+    </p>
+
+    <h2>Why I built it</h2>
+    <p>
+      <a href="https://usetrmnl.com/">TRMNL</a> e-ink displays are cheap, low-power,
+      and perfect for passive signage — but they only show what you push to them. MRBS
+      holds the source of truth but knows nothing about displays. The missing piece was
+      a small service to translate one into the other and keep the two in sync, so the
+      displays are always right the moment a booking changes.
+    </p>
+
+    <h2>How it works</h2>
+    <ul>
+      <li><strong>Real-time updates via webhooks:</strong> I added a hook to MRBS so that creating, updating, or deleting a booking POSTs to a FastAPI receiver, which immediately refreshes the affected display.</li>
+      <li><strong>Scheduled refresh:</strong> a background scheduler re-pushes on a configurable interval, so displays never drift even if a webhook is missed.</li>
+      <li><strong>Read-only data access:</strong> the service queries the MRBS MySQL database with SQLAlchemy (read-only) and shapes each room's day into a clean payload — current status, today's bookings, and the next booking.</li>
+      <li><strong>Per-room and central displays:</strong> each classroom gets its own daily schedule; lobby displays get an aggregated view of all rooms and how many are free.</li>
+      <li><strong>Testable without hardware:</strong> preview endpoints render the exact data and TRMNL payload without pushing, and manual-refresh endpoints let you force an update on demand.</li>
+    </ul>
+
+    <h2>Outcome &amp; what I learned</h2>
+    <p>
+      The result is a clean separation of concerns: the legacy PHP MRBS app stays
+      essentially untouched, and a small, modern FastAPI service does one job — read
+      the bookings, talk to one external display API, and keep everything in sync. The
+      most useful things I took away were the webhook-plus-scheduler pattern for
+      keeping passive displays current, designing merge-variable payloads for a
+      third-party display platform, and integrating a new service alongside an existing
+      application without entangling the two.
+    </p>
+
+    <footer class="case__foot">
+      <a class="btn btn--primary" href="https://github.com/hiiamhuy/Yanko-MRBS-FASTAPI">View Repo</a>
+      <a class="btn" href="../index.html#projects">← Back to portfolio</a>
+    </footer>
+  </main>
+
+  <script src="../main.js"></script>
+</body>
+</html>
