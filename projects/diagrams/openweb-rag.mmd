@@ -1,0 +1,20 @@
+graph TD
+    A["Agent's question<br/>(via Tailscale)"] --> B["Open WebUI"]
+    B --> C["Embed query<br/>all-MiniLM-L6-v2"]
+    C --> D["Hybrid retrieval<br/>BM25 + vector"]
+    D --> E[("Knowledge base<br/>ChromaDB")]
+    E --> F["Rerank, top-3 chunks"]
+    F --> G["Local Ollama model"]
+    B --> G
+    G --> H["Grounded answer<br/>to the agent"]
+
+    subgraph Offline["Self-hosted, fully offline, no data leaves the network"]
+        B
+        C
+        D
+        E
+        F
+        G
+    end
+    style Offline fill:#0f2a1f,stroke:#15803d,color:#fff
+    style E fill:#1f2937,stroke:#4b5563,color:#fff
