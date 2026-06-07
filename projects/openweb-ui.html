@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Offline RAG Call-Center Assistant — Huy Nguyen</title>
+  <meta name="description" content="A self-hosted, fully-offline AI assistant answering support agents from the internal knowledge base, using Open WebUI's hybrid-search RAG over a local Ollama model." />
+  <link rel="icon" href="../assets/favicon.svg" type="image/svg+xml" />
+  <link rel="stylesheet" href="../style.css" />
+</head>
+<body>
+  <header class="nav subnav">
+    <a class="nav__brand" href="../index.html#projects">← Portfolio</a>
+    <nav class="nav__links">
+      <a class="nav__resume" href="../resume.pdf" download>Resume</a>
+      <button id="theme-toggle" class="nav__theme" aria-label="Toggle color theme">◐</button>
+    </nav>
+  </header>
+
+  <main id="top" class="case">
+    <p class="case__eyebrow"><a href="../index.html#projects">Projects</a> / RAG Assistant</p>
+    <h1>Offline RAG Call-Center Assistant</h1>
+    <p class="case__subtitle">A self-hosted, fully-offline AI assistant that answers agents from the internal knowledge base — using Open WebUI's hybrid-search RAG over a local Ollama model.</p>
+    <ul class="card__tags case__tags">
+      <li>Open WebUI</li><li>Ollama</li><li>RAG</li><li>Docker</li><li>Tailscale</li>
+    </ul>
+
+    <h2>The problem</h2>
+    <p>
+      Support agents need fast, accurate answers from a large internal knowledge
+      base while they're on a call. Hunting through wikis mid-conversation is slow,
+      and a plain chatbot is worse than useless here — it will confidently invent
+      organization-specific procedures that don't exist. Whatever I built had to be
+      <strong>accurate, grounded in the real documentation, and private</strong>:
+      call and account context can't be shipped off to a third-party cloud API.
+    </p>
+
+    <h2>Why I built it</h2>
+    <p>
+      I wanted an assistant that answers <em>from</em> the knowledge base rather than
+      from a model's memory, runs <strong>entirely offline</strong> so sensitive
+      context never leaves the network, and is reachable by agents over Tailscale
+      from wherever they're working. Open WebUI plus a local Ollama model gave me a
+      self-hosted stack that does exactly that — no external dependencies, no data
+      leaving the building.
+    </p>
+
+    <h2>How it works</h2>
+    <p>
+      Open WebUI is the front-end and the RAG engine; Ollama runs the language model
+      locally. The knowledge base is ingested into Open WebUI, where it's chunked,
+      embedded, and stored in a vector database. When an agent asks a question, the
+      system retrieves the most relevant chunks and feeds them to the model, which
+      answers grounded in that retrieved context — and can point back to where the
+      answer came from.
+    </p>
+    <p>
+      The deliberate choice here was turning on <strong>hybrid search with
+      reranking</strong> instead of plain vector search. Keyword (BM25) matching
+      catches exact strings that semantic search glosses over — a specific NetID, an
+      error code, a product name — while vector search catches paraphrased questions
+      that don't share wording with the docs. A reranker then reorders the combined
+      results so the single best chunk lands at the top of the prompt. In RAG, that
+      "best chunk first" step is most of the battle.
+    </p>
+
+    <figure class="diagram">
+      <img src="diagrams/openweb-rag.svg" alt="RAG flow: an agent's question comes in over Tailscale to Open WebUI; the query is embedded with all-MiniLM-L6-v2; hybrid BM25 plus vector retrieval queries the ChromaDB knowledge base; results are reranked to the top-3 chunks; a local Ollama model produces a grounded answer — all self-hosted and offline." />
+      <figcaption>Question to grounded answer — embedding, hybrid retrieval, rerank, and local generation, all on-prem.</figcaption>
+    </figure>
+
+    <h3>RAG configuration</h3>
+    <table>
+      <thead><tr><th>Setting</th><th>Value</th></tr></thead>
+      <tbody>
+        <tr><td>Embeddings</td><td><code>all-MiniLM-L6-v2</code> (local SentenceTransformers)</td></tr>
+        <tr><td>Vector store</td><td>ChromaDB</td></tr>
+        <tr><td>Retrieval</td><td>Hybrid — BM25 keyword + semantic vector</td></tr>
+        <tr><td>Reranking</td><td>Enabled (best chunk first)</td></tr>
+        <tr><td>Chunking</td><td>~1000 chars, ~100 overlap</td></tr>
+        <tr><td>Top-k</td><td>3</td></tr>
+        <tr><td>Generation</td><td>Local model via Ollama</td></tr>
+        <tr><td>Access</td><td>Tailscale (private network)</td></tr>
+        <tr><td>Privacy</td><td>Fully offline — no third-party API</td></tr>
+      </tbody>
+    </table>
+
+    <h2>Outcome &amp; what I learned</h2>
+    <p>
+      The assistant gives agents real-time, grounded answers instead of sending them
+      digging through the knowledge base mid-call — faster resolutions and less
+      context-switching. The biggest lesson was that <strong>retrieval quality caps
+      answer quality</strong>: chunk size, the BM25-vs-vector balance, and reranking
+      shaped the answers at least as much as the choice of model did. I also got a
+      real feel for standing up a private, fully-offline RAG stack — embeddings
+      <em>and</em> generation on local hardware — which is what makes the privacy
+      story technically true rather than a slogan.
+    </p>
+
+    <footer class="case__foot">
+      <a class="btn btn--primary" href="https://github.com/hiiamhuy/offline-rag-assistant">View Repo</a>
+      <a class="btn" href="../index.html#projects">← Back to portfolio</a>
+    </footer>
+  </main>
+
+  <script src="../main.js"></script>
+</body>
+</html>
