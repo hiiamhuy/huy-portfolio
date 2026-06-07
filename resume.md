@@ -35,7 +35,7 @@ Earlier: Web Intern, OCA-Greater Seattle (2015) · Digital Connector, Cisco (201
 - **MRBS → TRMNL E-Ink Integration** — FastAPI service pushing classroom schedules to e-ink displays via webhooks + scheduler. SQLAlchemy, MySQL, Docker.
 - **Pantheon Storage Analysis** — Bash tool with platform auto-detection (WordPress/Drupal) and multi-format export.
 - **QuickBooks + OCR automation** — n8n workflow for receipt OCR and automated bookkeeping entries.
-- **OpenWeb UI call-center assistant** — offline RAG assistant with Ollama, Docker, and Tailscale.
+- **Offline RAG call-center assistant** — Open WebUI + local Ollama with hybrid-search RAG (BM25 + vector + reranking) over the internal knowledge base; Docker, Tailscale, fully offline.
 
 ## Skills
 Python, JavaScript, HTML/CSS, SQL, Bash · WhisperX, Ollama, RAG, n8n, LM Studio,
