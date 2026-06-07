@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Call Center QA — Transcription &amp; Analysis — Huy Nguyen</title>
+  <meta name="description" content="Automated transcription, speaker diarization, and AI quality-scoring for every UW IT Service Center support call, running on local LLMs on UW's Hyak supercomputer." />
+  <link rel="icon" href="../assets/favicon.svg" type="image/svg+xml" />
+  <link rel="stylesheet" href="../style.css" />
+</head>
+<body>
+  <header class="nav subnav">
+    <a class="nav__brand" href="../index.html#projects">← Portfolio</a>
+    <nav class="nav__links">
+      <a class="nav__resume" href="../resume.pdf" download>Resume</a>
+      <button id="theme-toggle" class="nav__theme" aria-label="Toggle color theme">◐</button>
+    </nav>
+  </header>
+
+  <main id="top" class="case">
+    <p class="case__eyebrow"><a href="../index.html#projects">Projects</a> / Call Center QA</p>
+    <h1>Call Center QA — Transcription &amp; Analysis</h1>
+    <p class="case__subtitle">Automated transcription, speaker diarization, and AI quality-scoring for every UW IT Service Center support call — running entirely on local LLMs on UW's Hyak supercomputer.</p>
+    <ul class="card__tags case__tags">
+      <li>Python</li><li>WhisperX</li><li>Ollama · DeepSeek-R1 32B</li><li>SLURM</li><li>Apptainer</li>
+    </ul>
+
+    <h2>The problem</h2>
+    <p>
+      The UW IT Service Center handles hundreds of support calls a week, but quality
+      assurance was a manual bottleneck. A manager could realistically listen to and
+      grade only <strong>5–6 calls</strong> per review cycle — a tiny, hand-picked
+      sample of everything that actually happened on the phones. The calls that most
+      needed a second look were as likely to be missed as found.
+    </p>
+
+    <h2>What it does</h2>
+    <p>
+      This pipeline removes that ceiling. It ingests raw call recordings, transcribes
+      and labels each speaker, scores every call against a structured QA rubric using
+      a locally-hosted large language model, and automatically routes the calls that
+      need a human's attention. Reviewers spend their time only on the calls that
+      matter — while <strong>every</strong> call still gets graded.
+    </p>
+    <p>
+      Because all inference runs locally on UW's HPC cluster,
+      <strong>sensitive call audio never leaves UW infrastructure</strong> — there's
+      no third-party cloud API in the loop.
+    </p>
+
+    <h2>Architecture</h2>
+    <p>
+      The pipeline is a set of decoupled stages orchestrated by SLURM, handing data
+      off through the shared filesystem rather than direct service calls. The
+      orchestrator fans out <strong>one SLURM job per call agent</strong>, so
+      transcription and analysis run in parallel across the cluster. The transcription
+      job writes <code>.vtt</code> files; the analysis job later reads them — fully
+      decoupled, with no database and no inter-service networking beyond the local
+      Ollama server.
+    </p>
+    <figure class="diagram">
+      <img src="diagrams/call-pipeline.svg" alt="Pipeline: recordings uploaded via Globus to per-agent folders, a SLURM orchestrator fans out one job per agent, WhisperX transcribes and diarizes, Ollama running DeepSeek-R1 32B scores against a rubric, and calls are routed by score into needs_further_attention or reviewed folders." />
+      <figcaption>Per-agent SLURM fan-out; stages hand off through the shared filesystem.</figcaption>
+    </figure>
+    <figure class="diagram">
+      <img src="diagrams/call-sequence.svg" alt="Sequence: the manager uploads recordings and runs the pipeline; SLURM runs the transcription job (WhisperX writes speaker-labeled VTT) then the analysis job (DeepSeek-R1 scores each transcript to JSON and routes it); the manager opens the flagged folder and report." />
+      <figcaption>End-to-end sequence from upload to triaged review folders.</figcaption>
+    </figure>
+
+    <h2>Tech stack</h2>
+    <table>
+      <thead><tr><th>Layer</th><th>Technology</th></tr></thead>
+      <tbody>
+        <tr><td>Languages</td><td>Python (3.9 / 3.10 in containers), Bash</td></tr>
+        <tr><td>Speech-to-text</td><td>WhisperX (<code>large-v2</code>)</td></tr>
+        <tr><td>Speaker diarization</td><td>pyannote.audio (HuggingFace token)</td></tr>
+        <tr><td>LLM scoring</td><td>Ollama serving DeepSeek-R1 32B (local inference)</td></tr>
+        <tr><td>ML backend</td><td>PyTorch + CUDA 12.2 / cuDNN 8</td></tr>
+        <tr><td>Containerization</td><td>Apptainer / Singularity (NVIDIA CUDA &amp; NVHPC base images)</td></tr>
+        <tr><td>Orchestration</td><td>SLURM (one job per agent)</td></tr>
+        <tr><td>Compute</td><td>UW Hyak HPC — GPU nodes (<code>gpu-rtx6k</code>), via <code>sbatch</code> / Open OnDemand</td></tr>
+        <tr><td>Storage / exchange</td><td>Shared filesystem (gscratch) — <code>.wav</code>, <code>.vtt</code>, JSON, Markdown (no database)</td></tr>
+        <tr><td>Data transfer</td><td>Globus (audio upload + archival)</td></tr>
+      </tbody>
+    </table>
+
+    <h2>How it works</h2>
+    <ul>
+      <li><strong>Fan-out orchestration:</strong> <code>submit_slurm.py</code> scans the <code>audio_data/</code> directory and submits an independent SLURM job per call agent, parallelizing across Hyak's GPU nodes.</li>
+      <li><strong>Transcription + diarization:</strong> WhisperX (<code>large-v2</code>) converts each <code>.wav</code> to text, while pyannote diarization plus a custom keyword/heuristic layer labels each utterance as <strong>agent</strong> vs. <strong>user</strong>, producing speaker-tagged <code>.vtt</code> transcripts.</li>
+      <li><strong>Rubric-based LLM scoring:</strong> a locally-hosted DeepSeek-R1 32B model grades each transcript against a weighted 100-point rubric and is <strong>constrained to emit structured JSON</strong>, so every score is machine-parseable rather than free text.</li>
+      <li><strong>Automatic triage:</strong> each call is routed by total score — <code>≤ 75</code> into <code>needs_further_attention/</code>, <code>&gt; 75</code> into <code>reviewed/</code> — so a manager opens one folder and sees only the calls worth human review.</li>
+      <li><strong>Human-readable reporting:</strong> alongside the raw JSON, the pipeline generates <code>analysis_report.md</code> per agent — a summary table plus a per-call breakdown of all six rubric components and the model's reasoning.</li>
+    </ul>
+
+    <h3>Scoring rubric</h3>
+    <table>
+      <thead><tr><th>Criterion</th><th>Max points</th></tr></thead>
+      <tbody>
+        <tr><td>NetID acquisition (within 120s)</td><td>10</td></tr>
+        <tr><td>Issue resolution</td><td>15</td></tr>
+        <tr><td>Instruction quality</td><td>15</td></tr>
+        <tr><td>Zoom verification usage</td><td>5</td></tr>
+        <tr><td>Confidentiality handling</td><td>7</td></tr>
+        <tr><td>Overall technical support quality</td><td>48</td></tr>
+        <tr><td><strong>Total</strong></td><td><strong>100</strong></td></tr>
+      </tbody>
+    </table>
+
+    <h2>What I built</h2>
+    <p>
+      The transcription engine (WhisperX) and the inference runtime (Ollama) are
+      off-the-shelf — but the <strong>pipeline around them is mine</strong>. I built
+      the SLURM orchestration layer that generates and submits one job per agent,
+      authored the Apptainer container definitions to get WhisperX and a 32B LLM
+      running on Hyak's GPU nodes, designed the six-component QA rubric and the prompt
+      engineering that forces structured JSON scores, and wrote the score-based routing
+      that triages calls into review buckets. The hard engineering wasn't any single
+      component — it was making transcription, diarization, a large local model,
+      containerization, and the HPC scheduler all work together reliably.
+    </p>
+
+    <h2>Challenges &amp; learnings</h2>
+    <p>
+      The toughest part was <strong>systems integration</strong>: getting WhisperX,
+      pyannote, a 32B DeepSeek model under Ollama, Apptainer, and SLURM to cooperate on
+      Hyak — including GPU memory constraints, pre-staging the model to avoid job
+      timeouts, and HuggingFace-token-gated diarization. I learned how to package
+      GPU-heavy ML workloads into reproducible HPC containers, and how to design an LLM
+      prompt that returns reliably structured output. If I rebuilt it, I'd
+      <strong>automate populating the input folders</strong> and replace manual
+      per-agent submission with a proper job queue for the analysis stage. The rubric
+      is also a known limitation — calibrating its scores against human graders is the
+      clear next step.
+    </p>
+
+    <h2>Results</h2>
+    <ul>
+      <li><strong>Works end to end</strong> — reliably transcribes, diarizes, and scores real support calls.</li>
+      <li><strong>Throughput:</strong> roughly <strong>300 calls per week</strong> in production-scale runs, with ~300 calls completing in about <strong>8 hours</strong> on Hyak GPU nodes.</li>
+      <li><strong>Coverage:</strong> raises QA from ~5–6 manually reviewed calls to <strong>every call</strong> in the weekly batch.</li>
+      <li><strong>Stakeholder response:</strong> demoed to UW ITSC leadership and management, whose reaction was to implement it as soon as possible.</li>
+      <li><strong>Status:</strong> not yet in production use at UWITSC; no public demo (it runs on Hyak with private call data). Score-vs-human calibration is the next step.</li>
+    </ul>
+
+    <div class="case__placeholder">📷 Screenshot to add before publishing: a sample <code>analysis_report.md</code> (score table + rubric breakdown) and the sorted <code>needs_further_attention/</code> vs <code>reviewed/</code> folders — the most convincing artifact for this project.</div>
+
+    <p class="case__ack">Acknowledgements: Dawn Mai; thanks to Kaichen and Kristen for the Apptainer containers and Hyak guidance.</p>
+
+    <footer class="case__foot">
+      <a class="btn btn--primary" href="https://github.com/hiiamhuy/uwitsc-call-analysis">View Repo</a>
+      <a class="btn" href="../index.html#projects">← Back to portfolio</a>
+    </footer>
+  </main>
+
+  <script src="../main.js"></script>
+</body>
+</html>
