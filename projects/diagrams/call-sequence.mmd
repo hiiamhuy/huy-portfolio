@@ -1,0 +1,20 @@
+sequenceDiagram
+    participant M as IT Manager
+    participant O as submit_slurm.py
+    participant S as SLURM Scheduler
+    participant W as WhisperX (GPU)
+    participant L as Ollama / DeepSeek-R1 32B (GPU)
+    participant F as Filesystem
+
+    M->>F: Upload call recordings to audio_data/[Agent]/
+    M->>O: ./run_speaker_analysis.sh audio_data
+    O->>S: Submit one transcription + analysis job per agent
+    S->>W: Run transcription job
+    W->>W: Transcribe + diarize each call (large-v2 + pyannote)
+    W->>F: Write [CallID].vtt (speaker-labeled)
+    S->>L: Run analysis job
+    L->>F: Read .vtt transcripts
+    L->>L: Score each call against 100-pt rubric, structured JSON
+    L->>F: Write analysis_results.json + analysis_report.md
+    L->>F: Route call to needs_further_attention/ or reviewed/
+    M->>F: Open needs_further_attention/ and analysis_report.md

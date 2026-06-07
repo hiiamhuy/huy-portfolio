@@ -1,0 +1,23 @@
+graph TD
+    A[IT Manager] -->|Uploads .wav recordings via Globus| B["audio_data/&#91;AgentName&#93;/"]
+    B --> C[submit_slurm.py<br/>Orchestrator]
+    C -->|Generates one SLURM job per agent| D{Hyak GPU Nodes}
+
+    subgraph Stage1["Stage 1 — Transcription Job"]
+        E[WhisperX Container<br/>large-v2 + pyannote] -->|Speech-to-text + speaker diarization| F[".vtt transcript<br/>with speaker labels"]
+    end
+
+    subgraph Stage2["Stage 2 — Analysis Job"]
+        G[Ollama Container<br/>DeepSeek-R1 32B] -->|Scores transcript vs. rubric| H["analysis_results.json<br/>+ analysis_report.md"]
+    end
+
+    D --> Stage1
+    F -->|Filesystem hand-off| Stage2
+    H --> I{Score vs. threshold 75}
+    I -->|Score ≤ 75| J["needs_further_attention/<br/>(manager reviews these)"]
+    I -->|Score &gt; 75| K["reviewed/<br/>(auto-cleared)"]
+
+    style Stage1 fill:#1f2937,stroke:#4b5563,color:#fff
+    style Stage2 fill:#1f2937,stroke:#4b5563,color:#fff
+    style J fill:#7f1d1d,stroke:#b91c1c,color:#fff
+    style K fill:#14532d,stroke:#15803d,color:#fff
