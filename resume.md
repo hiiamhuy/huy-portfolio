@@ -1,10 +1,10 @@
 # Huy Nguyen
-IT & Automation Specialist · Seattle, WA
+IT Specialist · Automation & AI · Seattle, WA
 hiiamhuy@uw.edu · github.com/hiiamhuy
 
 ## Summary
-IT and automation specialist with ~10 years at UW-IT across Tier-1 support, web
-publishing, and service operations. Builds AI/automation tooling — speech-to-text
+IT specialist with ~10 years at UW-IT across Tier-1 support, web publishing, and
+service operations, who builds automation and AI tooling — speech-to-text
 pipelines, local LLM workflows, and integrations that remove repetitive work.
 ITIL 4 Foundations certified.
 
