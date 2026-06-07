@@ -1,5 +1,5 @@
 graph TD
-    A[IT Manager] -->|Uploads .wav recordings via Globus| B["audio_data/&#91;AgentName&#93;/"]
+    A[IT Manager] -->|Uploads .wav recordings via Globus| B["audio_data/&lt;AgentName&gt;/"]
     B --> C[submit_slurm.py<br/>Orchestrator]
     C -->|Generates one SLURM job per agent| D{Hyak GPU Nodes}
 
