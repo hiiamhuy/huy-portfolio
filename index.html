@@ -3,8 +3,8 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Huy Nguyen — Software Developer</title>
-  <meta name="description" content="Software developer portfolio — selected projects and résumé." />
+  <title>Huy Nguyen — IT &amp; Automation Specialist</title>
+  <meta name="description" content="Huy Nguyen — IT &amp; Automation Specialist. UW-IT service operations, web publishing, and AI/automation projects." />
   <link rel="icon" href="assets/favicon.svg" type="image/svg+xml" />
   <link rel="stylesheet" href="style.css" />
 </head>
@@ -12,6 +12,7 @@
   <header class="nav">
     <a class="nav__brand" href="#top">HN</a>
     <nav class="nav__links">
+      <a href="#experience">Experience</a>
       <a href="#projects">Projects</a>
       <a href="#skills">Skills</a>
       <a href="#contact">Contact</a>
@@ -25,16 +26,15 @@
     <section class="hero">
       <p class="hero__eyebrow">Hi, I'm</p>
       <h1 class="hero__name">Huy Nguyen</h1>
-      <p class="hero__title">Software Developer</p>
-      <p class="hero__tagline">I build clean, reliable web applications and developer tools.</p>
+      <p class="hero__title">IT &amp; Automation Specialist</p>
+      <p class="hero__tagline">I keep systems running and automate the tedious parts — from UW-IT service operations to AI-driven workflows.</p>
       <div class="hero__actions">
         <a class="btn btn--primary" href="resume.pdf" download>Download Résumé</a>
         <a class="btn" href="#projects">View Projects</a>
       </div>
       <ul class="hero__links">
         <li><a href="https://github.com/hiiamhuy">GitHub</a></li>
-        <li><a href="mailto:huynguyen206@gmail.com">Email</a></li>
-        <li><a href="#" data-edit="linkedin">LinkedIn</a></li>
+        <li><a href="mailto:hiiamhuy@uw.edu">Email</a></li>
       </ul>
     </section>
 
@@ -42,9 +42,67 @@
     <section class="about" id="about">
       <h2 class="section__title">About</h2>
       <p>
-        Short 2–3 sentence intro goes here. Who you are, what you build, and what
-        kind of role you're looking for. (Replaced in Task 6.)
+        I'm a University of Washington graduate (BS Informatics, BA American Ethnic
+        Studies) with roughly a decade at UW-IT spanning Tier-1 support, web
+        publishing, and service operations. Today I focus on building AI and
+        automation tooling — speech-to-text pipelines, local LLM workflows, and
+        integrations that take repetitive work off people's plates. ITIL 4
+        Foundations certified, and equally comfortable in a ticket queue or a
+        terminal.
       </p>
+    </section>
+
+    <!-- EXPERIENCE -->
+    <section class="experience" id="experience">
+      <h2 class="section__title">Experience</h2>
+      <div class="timeline">
+
+        <article class="timeline__item">
+          <div class="timeline__head">
+            <h3 class="timeline__role">Senior Computer Specialist <span class="timeline__org">— UW-IT Service Center</span></h3>
+            <span class="timeline__dates">2019 – Present</span>
+          </div>
+          <ul class="timeline__points">
+            <li>Manage incidents to restore service quickly; author reference and FAQ articles for the Service Center knowledge base.</li>
+            <li>Designed and programmed ServiceNow forms and efficiency shortcuts; trained students in ServiceNow, email, web hosting, and account services.</li>
+          </ul>
+        </article>
+
+        <article class="timeline__item">
+          <div class="timeline__head">
+            <h3 class="timeline__role">Senior Computer Specialist, User Consulting Support <span class="timeline__org">— UW-IT</span></h3>
+            <span class="timeline__dates" data-edit="ucs-dates">[dates]</span>
+          </div>
+          <ul class="timeline__points">
+            <li>Managed web publishing for sites.uw.edu, Pantheon, and UW Shared Web Publishing, ensuring accessibility and usability.</li>
+            <li>Provided platform support and contributed internal documentation and best practices for web publishing workflows.</li>
+          </ul>
+        </article>
+
+        <article class="timeline__item">
+          <div class="timeline__head">
+            <h3 class="timeline__role">Identity &amp; Access Management Student Lead <span class="timeline__org">— UW-IT Service Center</span></h3>
+            <span class="timeline__dates">2014 – 2018</span>
+          </div>
+          <ul class="timeline__points">
+            <li>Approved non-standard account requests and maintained the Person Registry for all UW affiliations.</li>
+            <li>Developed scripts for batch account creation; triaged hardware/software issues and trained student consultants.</li>
+          </ul>
+        </article>
+
+        <article class="timeline__item">
+          <div class="timeline__head">
+            <h3 class="timeline__role">Student IT Consultant <span class="timeline__org">— UW-IT Service Center</span></h3>
+            <span class="timeline__dates">2013 – 2015</span>
+          </div>
+          <ul class="timeline__points">
+            <li>Provided Tier-1 support for UW affiliates; handled 50+ daily calls and emails for email, web hosting, account, and network issues.</li>
+            <li>Student lead for Unix/Mailman list management and pager/teleconferencing account operations.</li>
+          </ul>
+        </article>
+
+        <p class="timeline__earlier">Earlier: Web Intern, OCA-Greater Seattle (2015) · Digital Connector, Cisco (2010–2011).</p>
+      </div>
     </section>
 
     <!-- PROJECTS -->
@@ -52,60 +110,59 @@
       <h2 class="section__title">Featured Projects</h2>
       <div class="projects__grid">
 
-        <!-- PROJECT CARD TEMPLATE (duplicate per project, 4–6 total) -->
         <article class="card">
-          <div class="card__media">
-            <img src="assets/projects/placeholder.png" alt="Screenshot of Project One" loading="lazy" />
-          </div>
+          <div class="card__media" aria-hidden="true"><span>Call Center QA</span></div>
           <div class="card__body">
-            <h3 class="card__title">Project One</h3>
-            <p class="card__desc">One or two line description of what it does and why it's notable.</p>
+            <h3 class="card__title">Call Center QA — Transcription &amp; Analysis</h3>
+            <p class="card__desc">Automated pipeline that transcribes customer-service calls and scores quality with a local LLM. WhisperX handles speech-to-text and speaker diarization; Ollama (Llama 3.2) grades calls against a rubric and routes them to review queues — running on UW's Hyak cluster via SLURM and GPU containers.</p>
             <ul class="card__tags">
-              <li>TypeScript</li>
-              <li>React</li>
-              <li>Node</li>
+              <li>Python</li><li>WhisperX</li><li>Ollama</li><li>SLURM</li><li>Docker</li>
             </ul>
             <div class="card__links">
-              <a href="https://github.com/hiiamhuy/project-one">Repo</a>
-              <a href="#">Live demo</a>
+              <a href="https://github.com/hiiamhuy/uwitsc-call-analysis">Repo</a>
             </div>
           </div>
         </article>
 
         <article class="card">
-          <div class="card__media">
-            <img src="assets/projects/placeholder.png" alt="Screenshot of Project Two" loading="lazy" />
-          </div>
+          <div class="card__media" aria-hidden="true"><span>MRBS → TRMNL</span></div>
           <div class="card__body">
-            <h3 class="card__title">Project Two</h3>
-            <p class="card__desc">One or two line description.</p>
+            <h3 class="card__title">MRBS → TRMNL E-Ink Integration</h3>
+            <p class="card__desc">FastAPI service that pushes classroom booking schedules to e-ink displays. MRBS webhooks trigger real-time updates and a background scheduler keeps per-room and lobby displays current across ~30 rooms.</p>
             <ul class="card__tags">
-              <li>Python</li>
-              <li>Flask</li>
+              <li>FastAPI</li><li>SQLAlchemy</li><li>MySQL</li><li>Docker</li>
             </ul>
             <div class="card__links">
-              <a href="https://github.com/film35/project-two">Repo</a>
+              <a href="https://github.com/hiiamhuy/Yanko-MRBS-FASTAPI">Repo</a>
             </div>
           </div>
         </article>
 
         <article class="card">
-          <div class="card__media">
-            <img src="assets/projects/placeholder.png" alt="Screenshot of Project Three" loading="lazy" />
-          </div>
+          <div class="card__media" aria-hidden="true"><span>Storage Analysis</span></div>
           <div class="card__body">
-            <h3 class="card__title">Project Three</h3>
-            <p class="card__desc">One or two line description.</p>
+            <h3 class="card__title">Pantheon Storage Analysis</h3>
+            <p class="card__desc">Bash tool that audits storage for Pantheon-hosted sites. Auto-detects WordPress, Drupal, or generic platforms, breaks down usage across dev/test/live environments, and exports to JSON, CSV, HTML, and Markdown.</p>
             <ul class="card__tags">
-              <li>Go</li>
+              <li>Bash</li><li>Terminus</li><li>WP-CLI</li><li>Drush</li>
             </ul>
             <div class="card__links">
-              <a href="https://github.com/hiiamhuy/project-three">Repo</a>
+              <a href="https://github.com/hiiamhuy/storage-analysis">Repo</a>
             </div>
           </div>
         </article>
 
       </div>
+    </section>
+
+    <!-- ALSO BUILT -->
+    <section class="also" id="also">
+      <h2 class="section__title">Also built</h2>
+      <ul class="also__list">
+        <li><strong>QuickBooks + OCR bookkeeping automation</strong> — n8n workflow that creates accounting entries from invoices and receipts, extracting vendor/date/amount via OCR and handling duplicates and exceptions.</li>
+        <li><strong>OpenWeb UI call-center assistant</strong> — self-hosted, fully offline AI support tool using RAG with Ollama, deployed with Docker and Tailscale for secure access.</li>
+        <li><strong>Homelab storage builds</strong> — TrueNAS (ZFS) and unRAID servers with SMB/NFS sharing, plus a 3-2-1 backup strategy using Rclone and offsite cloud storage.</li>
+      </ul>
     </section>
 
     <!-- SKILLS -->
@@ -114,15 +171,15 @@
       <div class="skills__groups">
         <div class="skills__group">
           <h3>Languages</h3>
-          <ul><li>JavaScript / TypeScript</li><li>Python</li><li>Go</li></ul>
+          <ul><li>Python</li><li>JavaScript</li><li>HTML / CSS</li><li>SQL</li><li>Bash</li></ul>
         </div>
         <div class="skills__group">
-          <h3>Frameworks</h3>
-          <ul><li>React</li><li>Node / Express</li><li>Flask</li></ul>
+          <h3>AI &amp; Automation</h3>
+          <ul><li>WhisperX</li><li>Ollama</li><li>RAG</li><li>n8n</li><li>LM Studio</li><li>OpenWeb UI</li></ul>
         </div>
         <div class="skills__group">
-          <h3>Tools</h3>
-          <ul><li>Git</li><li>Docker</li><li>Linux</li></ul>
+          <h3>Platforms &amp; Tools</h3>
+          <ul><li>Docker</li><li>Linux</li><li>Pantheon</li><li>ServiceNow</li><li>Tailscale</li><li>Git</li></ul>
         </div>
       </div>
     </section>
@@ -131,11 +188,10 @@
   <footer class="footer" id="contact">
     <h2 class="section__title">Get in touch</h2>
     <ul class="footer__links">
-      <li><a href="mailto:huynguyen206@gmail.com">huynguyen206@gmail.com</a></li>
+      <li><a href="mailto:hiiamhuy@uw.edu">hiiamhuy@uw.edu</a></li>
       <li><a href="https://github.com/hiiamhuy">github.com/hiiamhuy</a></li>
-      <li><a href="#" data-edit="linkedin">LinkedIn</a></li>
     </ul>
-    <p class="footer__note">© 2026 Huy Nguyen. Built with plain HTML & CSS.</p>
+    <p class="footer__note">ITIL 4 Foundations certified · © 2026 Huy Nguyen. Built with plain HTML &amp; CSS.</p>
   </footer>
 
   <script src="main.js"></script>
