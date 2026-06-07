@@ -31,7 +31,7 @@ ITIL 4 Foundations certified.
 Earlier: Web Intern, OCA-Greater Seattle (2015) · Digital Connector, Cisco (2010–2011).
 
 ## Projects
-- **Call Center QA — Transcription & Analysis** — WhisperX speech-to-text + speaker diarization and Ollama (Llama 3.2) rubric scoring on UW Hyak (SLURM/GPU). Python, Docker.
+- **Call Center QA — Transcription & Analysis** — WhisperX speech-to-text + speaker diarization and DeepSeek-R1 32B (via Ollama) rubric scoring on UW Hyak (SLURM/GPU). Python, Apptainer.
 - **MRBS → TRMNL E-Ink Integration** — FastAPI service pushing classroom schedules to e-ink displays via webhooks + scheduler. SQLAlchemy, MySQL, Docker.
 - **Pantheon Storage Analysis** — Bash tool with platform auto-detection (WordPress/Drupal) and multi-format export.
 - **QuickBooks + OCR automation** — n8n workflow for receipt OCR and automated bookkeeping entries.
