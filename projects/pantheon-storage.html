@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Pantheon Storage Analysis — Huy Nguyen</title>
+  <meta name="description" content="A one-command storage audit for Pantheon-hosted WordPress, Drupal, and generic sites, with multi-format export." />
+  <link rel="icon" href="../assets/favicon.svg" type="image/svg+xml" />
+  <link rel="stylesheet" href="../style.css" />
+</head>
+<body>
+  <header class="nav subnav">
+    <a class="nav__brand" href="../index.html#projects">← Portfolio</a>
+    <nav class="nav__links">
+      <a class="nav__resume" href="../resume.pdf" download>Resume</a>
+      <button id="theme-toggle" class="nav__theme" aria-label="Toggle color theme">◐</button>
+    </nav>
+  </header>
+
+  <main id="top" class="case">
+    <p class="case__eyebrow"><a href="../index.html#projects">Projects</a> / Storage Analysis</p>
+    <h1>Pantheon Storage Analysis</h1>
+    <p class="case__subtitle">A one-command storage audit for Pantheon-hosted WordPress, Drupal, and generic sites.</p>
+    <ul class="card__tags case__tags">
+      <li>Bash</li><li>Terminus</li><li>WP-CLI</li><li>Drush</li>
+    </ul>
+
+    <h2>The problem</h2>
+    <p>
+      Supporting web publishing on Pantheon, I kept running into the same question:
+      <em>what's actually using all the storage?</em> Answering it meant poking around
+      across <strong>dev, test, and live</strong> for a site that might be WordPress,
+      Drupal, or neither — and naive shell pipes run against remote hosts kept choking
+      on PHP warnings and broken-pipe errors, so the "quick check" was never quick.
+    </p>
+
+    <h2>Why I built it</h2>
+    <p>
+      I wanted a repeatable, one-command audit that works regardless of platform and
+      produces a clean, shareable report — instead of ad-hoc SSH spelunking that I'd
+      have to reconstruct from memory every time. Run it, get a breakdown, hand the
+      report to whoever asked.
+    </p>
+
+    <h2>How it works</h2>
+    <ul>
+      <li><strong>Platform auto-detection:</strong> the script asks <code>terminus site:info --field=framework</code> and routes to WordPress, Drupal, or generic analysis automatically.</li>
+      <li><strong>Platform-specific analysis:</strong> it runs inline PHP through <code>terminus remote:wp</code> (WP-CLI) or <code>terminus remote:drush</code> (Drush) to break down the storage that matters — wp-content vs. sites/default/files, the largest plugins or modules, and database size.</li>
+      <li><strong>Defensive shell engineering:</strong> command output is captured into arrays instead of streamed through pipes (to dodge broken-pipe errors), PHP warnings are suppressed, and noise is filtered out — the reliability work that makes remote analysis actually dependable.</li>
+      <li><strong>One or all environments:</strong> analyze a single environment, or all three with a side-by-side comparison.</li>
+      <li><strong>Multi-format export:</strong> results export to JSON, CSV, TXT, HTML, and Markdown, with timestamped filenames — pick the format that fits the audience.</li>
+    </ul>
+
+    <h2>Outcome &amp; what I learned</h2>
+    <p>
+      The tool turns a fiddly, error-prone manual task into a single command that
+      produces a consistent report across platforms. The real lesson was
+      <strong>defensive shell engineering against messy remote output</strong> — error
+      suppression, array-based processing, and careful output filtering — plus the
+      design challenge of making one script handle three different platforms cleanly
+      without becoming a tangle of special cases.
+    </p>
+
+    <footer class="case__foot">
+      <a class="btn btn--primary" href="https://github.com/hiiamhuy/storage-analysis">View Repo</a>
+      <a class="btn" href="../index.html#projects">← Back to portfolio</a>
+    </footer>
+  </main>
+
+  <script src="../main.js"></script>
+</body>
+</html>
