@@ -1,49 +1,81 @@
-# Huy Nguyen
-IT Specialist · Automation & AI · Seattle, WA
-hiiamhuy@uw.edu · github.com/hiiamhuy
+# Huy N.
+Seattle, WA · hiiamhuy@uw.edu · github.com/hiiamhuy
 
-## Summary
-IT specialist with ~10 years at UW-IT across Tier-1 support, web publishing, and
-service operations, who builds automation and AI tooling — speech-to-text
-pipelines, local LLM workflows, and integrations that remove repetitive work.
-ITIL 4 Foundations certified.
+*IT Specialist · Automation & AI*
 
-## Experience
-
-**Senior Computer Specialist — UW-IT Service Center** (2019 – Present)
-- Manage incidents to restore normal service operations quickly, minimizing impact.
-- Author reference and FAQ articles for the Service Center knowledge base.
-- Designed and programmed ServiceNow forms and efficiency shortcuts.
-- Trained students in ServiceNow, email, web hosting, and account services.
-
-**Senior Computer Specialist, User Consulting Support — UW-IT** ([dates])
-- Managed web publishing for sites.uw.edu, Pantheon, and UW Shared Web Publishing.
-- Provided platform support and authored internal best-practice documentation.
-
-**Identity & Access Management Student Lead — UW-IT Service Center** (2014 – 2018)
-- Approved non-standard account requests; maintained the Person Registry for all UW affiliations.
-- Developed scripts for batch account creation; trained student consultants.
-
-**Student IT Consultant — UW-IT Service Center** (2013 – 2015)
-- Provided Tier-1 support; handled 50+ daily calls/emails for email, web, account, and network issues.
-- Student lead for Unix/Mailman list management and pager/teleconferencing operations.
-
-Earlier: Web Intern, OCA-Greater Seattle (2015) · Digital Connector, Cisco (2010–2011).
-
-## Projects
-- **Call Center QA — Transcription & Analysis** — WhisperX speech-to-text + speaker diarization and DeepSeek-R1 32B (via Ollama) rubric scoring on UW Hyak (SLURM/GPU). Python, Apptainer.
-- **MRBS → TRMNL E-Ink Integration** — FastAPI service pushing classroom schedules to e-ink displays via webhooks + scheduler. SQLAlchemy, MySQL, Docker.
-- **Pantheon Storage Analysis** — Bash tool with platform auto-detection (WordPress/Drupal) and multi-format export.
-- **QuickBooks + OCR automation** — n8n workflow for receipt OCR and automated bookkeeping entries.
-- **Offline RAG call-center assistant** — Open WebUI + local Ollama with hybrid-search RAG (BM25 + vector + reranking) over the internal knowledge base; Docker, Tailscale, fully offline.
-
-## Skills
-Python, JavaScript, HTML/CSS, SQL, Bash · WhisperX, Ollama, RAG, n8n, LM Studio,
-OpenWeb UI · Docker, Linux, Pantheon, ServiceNow, Tailscale, Git · TrueNAS, unRAID
+## Professional Summary
+IT specialist with 10+ years of experience at the University of Washington
+supporting diverse users, building automation, and deploying AI tooling.
+Skilled in generative AI, local LLM deployment, ServiceNow, web publishing, and
+training users across technical skill levels. Proven ability to author
+documentation, streamline processes, and enable secure, efficient adoption of
+emerging technologies.
 
 ## Education
-University of Washington — BS Informatics (2018)
-University of Washington — BA American Ethnic Studies (2018)
 
-## Certification
-ITIL 4 Foundations
+**University of Washington, College of Arts & Sciences** — B.A., American Ethnic Studies
+
+**University of Washington, Information School** — B.S., Informatics.
+
+## Professional Experience
+
+**Senior Computer Specialist — UW-IT User Consulting Support** (2019 – Present)
+
+- Managed incidents and restored service operations promptly, minimizing business impact.
+- Authored knowledge base and FAQ articles to improve user support and Service Center routing.
+- Designed and programmed ServiceNow forms; developed keyboard shortcuts to improve analyst efficiency.
+- Trained students and staff on ServiceNow, email, web hosting, account management, and network troubleshooting.
+- Led adoption and documentation of AI-assisted workflows for internal processes.
+
+**Identity & Access Management Student Lead — UW-IT Service Center** (2014 – 2018)
+
+- Approved non-standard account requests and maintained Person Registry for UW affiliates.
+- Developed scripts and programs to support batch account creation and daily operations.
+- Authored knowledge base articles and trained student consultants on troubleshooting topics including email, web hosting, and account services.
+
+## Projects — AI & Automation
+
+**OpenWeb UI Call Center Assistant** (2024)
+
+- Implemented offline, self-hosted AI platform using Ollama and RAG to provide real-time guidance to call center agents.
+- Developed documentation and training materials to facilitate adoption.
+- *Outcome:* Reduced call resolution times and improved agent productivity.
+
+**Call Center QA — Transcription & Analysis** (2025)
+
+- Automated transcription and quality evaluation of call recordings using WhisperX and local LLMs.
+- Built batch processing workflow and rubric-based evaluation system.
+- *Outcome:* Streamlined QA process, reduced manual review workload, ensured data privacy.
+
+**Automated QuickBooks Entry & Receipt OCR Workflow** (2025)
+
+- Developed automated workflow using n8n and OCR to extract invoice data and create QuickBooks entries.
+- Implemented logic to handle exceptions, duplicates, and incomplete data.
+- *Outcome:* Reduced bookkeeping time, improved accuracy, enabled near real-time financial reporting.
+
+**Bloom API Chaya — Web-based Storytelling Platform** (2017)
+
+- Designed UI wireframes based on user research; rapidly prototyped front-end using React/Redux.
+- Developed RESTful API in Go; performed usability testing to optimize user experience.
+
+**Chatbot Microservice** (2017)
+
+- Developed Go RESTful API and Node/Wit.ai chatbot microservice.
+- Deployed web application to Linux server using Docker with authenticated sessions and WebSocket messaging.
+
+## Systems & Infrastructure Projects
+- **unRAID Server Build** (2020) — NAS, media storage, VMs, Docker containers, VPN, Windows snapshots.
+- **Synology Backup for unRAID** (2021) — 3-2-1 backup strategy, offsite cloud sync via Rclone.
+- **pfSense Server** (2019) — Firewall/router, VPN, Snort intrusion detection, network monitoring, pfBlocker region-based IP blocking.
+
+## Certifications
+- ITIL 4 Foundations
+
+## Technical Skills
+- **Generative AI & LLMs:** Ollama, LM Studio, OpenWeb UI, RAG, WhisperX
+- **Automation & Integration:** n8n, OCR, QuickBooks API, workflow automation
+- **Web Development:** HTML, CSS, SASS, Node.js, React, Redux, JSX, Bootstrap, jQuery
+- **Database:** PostgreSQL, MS SQL Server, MongoDB, Redis, Firebase
+- **Programming:** Go, Java, R, TypeScript
+- **IT Support & Platforms:** ServiceNow, Pantheon, Windows, Linux, NAS, UW Shared Web Publishing
+- **Other Tools:** Git, Docker, OpenVPN/WireGuard
