@@ -1,5 +1,5 @@
-# Huy N.
-Seattle, WA · hiiamhuy@uw.edu · github.com/hiiamhuy
+# Huy Nguyen
+Seattle, WA · hiiamhuy@uw.edu · [github.com/hiiamhuy](https://github.com/hiiamhuy) · [Portfolio](https://hiiamhuy.github.io/huy-portfolio/)
 
 *IT Specialist · Automation & AI*
 
@@ -19,19 +19,18 @@ emerging technologies.
 
 ## Professional Experience
 
-**Senior Computer Specialist — UW-IT User Consulting Support** (2019 – Present)
+**Senior Computer Specialist — UW-IT User Consulting Support** (2022 – Present)
 
-- Managed incidents and restored service operations promptly, minimizing business impact.
-- Authored knowledge base and FAQ articles to improve user support and Service Center routing.
-- Designed and programmed ServiceNow forms; developed keyboard shortcuts to improve analyst efficiency.
-- Trained students and staff on ServiceNow, email, web hosting, account management, and network troubleshooting.
+- Led a web-hosting server migration for the university's entire shared web hosting user base — relocating each user's site and MySQL database and supporting the cutover with minimal downtime.
+- Support UW web publishing across sites.uw.edu, Pantheon, and UW Shared Web Publishing.
+- Authored knowledge base and FAQ articles and internal best-practice documentation.
 - Led adoption and documentation of AI-assisted workflows for internal processes.
 
-**Identity & Access Management Student Lead — UW-IT Service Center** (2014 – 2018)
+**Senior Computer Specialist — UW-IT Service Desk** (2019 – 2022)
 
-- Approved non-standard account requests and maintained Person Registry for UW affiliates.
-- Developed scripts and programs to support batch account creation and daily operations.
-- Authored knowledge base articles and trained student consultants on troubleshooting topics including email, web hosting, and account services.
+- Managed incidents and restored service operations promptly, minimizing business impact.
+- Designed and programmed ServiceNow forms; developed keyboard shortcuts to improve analyst efficiency.
+- Trained students and staff on ServiceNow, email, web hosting, account management, and network troubleshooting.
 
 ## Projects — AI & Automation
 
@@ -77,5 +76,5 @@ emerging technologies.
 - **Web Development:** HTML, CSS, SASS, Node.js, React, Redux, JSX, Bootstrap, jQuery
 - **Database:** PostgreSQL, MS SQL Server, MongoDB, Redis, Firebase
 - **Programming:** Go, Java, R, TypeScript
-- **IT Support & Platforms:** ServiceNow, Pantheon, Windows, Linux, NAS, UW Shared Web Publishing
+- **IT Support & Platforms:** ServiceNow, Pantheon, Windows, Linux, TrueNAS, UW Shared Web Publishing
 - **Other Tools:** Git, Docker, OpenVPN/WireGuard

@@ -7,5 +7,5 @@ directly; push to `main` to deploy via GitHub Pages (project Pages, served from
 the repo root). All asset paths are relative so the site works under the
 `/huy-portfolio` subpath.
 
-- `resume.md` — résumé source of truth
+- `resume.md` — resume source of truth
 - `resume.pdf` — generated download (`pandoc resume.md -o resume.pdf`)
